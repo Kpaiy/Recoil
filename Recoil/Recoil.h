@@ -32,7 +32,7 @@ private:
 
 	//current menu or game state
 	//0 - Main Menu, 1 - Game, 2 - Settings
-	int menuState = 0;
+	int menuState;
 
 	//whether the player is currently in a game
 	bool playing;
