@@ -10,5 +10,8 @@ required when the user closes the game.
 using namespace std;
 
 void Recoil::Close() {
-
+	//close the window
+	window.close();
+	//pause the console (WINDOWS ONLY)
+	system("pause");
 }

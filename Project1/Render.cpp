@@ -11,5 +11,11 @@ them on the screen.
 using namespace std;
 
 void Recoil::Render() {
+	//clear the window
+	window.clear(sf::Color::White);
 
+	//draw game objects to window
+
+	//update the display
+	window.display();
 }
