@@ -15,6 +15,7 @@ void Recoil::Render() {
 	window.clear(sf::Color::White);
 
 	//draw game objects to window
+	window.draw(missingSprite);
 
 	//update the display
 	window.display();

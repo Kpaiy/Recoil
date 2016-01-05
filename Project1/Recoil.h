@@ -19,6 +19,9 @@ elements of the game.
 #include <SFML\Graphics.hpp>
 #include <SFML\Audio.hpp>
 
+//own code
+#include "Utilities.h"
+
 class Recoil {
 private:
 	//whether the game is running or not
@@ -36,7 +39,6 @@ private:
 
 	//whether the player is currently in a game
 	bool playing;
-
 public:
 	//the constructor function, allowing everything to work
 	Recoil();
@@ -54,5 +56,8 @@ public:
 	//run this when user quits game
 	void Close();
 
+	//texture and sprite
+	sf::Texture missingTexture;
+	sf::Sprite missingSprite;
 
 };

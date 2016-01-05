@@ -19,6 +19,7 @@ int Recoil::Execute() {
 	//!INITIATION
 
 	//shiny console shenanigans
+	cout << "----------------------" << endl;
 	cout << "        Recoil        " << endl;
 	cout << "Created by Craig Smith" << endl;
 	cout << "----------------------" << endl;
@@ -26,6 +27,11 @@ int Recoil::Execute() {
 	//load stuff
 	if (!Init()) {
 		//if loading went wrong, give up now
+		//notify through console
+		cout << "Loading halted due to errors" << endl << endl;
+		//pause the console
+		system("pause");
+
 		return -1;
 	}
 

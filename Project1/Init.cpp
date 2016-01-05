@@ -13,6 +13,12 @@ using namespace std;
 
 bool Recoil::Init() {
 	//assign variable values here and load assets
+	
+	//attempt load missingTexture texture to sprite
+	if (!TextureUtils::loadTextureToSprite("resources/graphics/missingTexture.png", &missingTexture, &missingSprite)) {
+		//if unable to load, return false
+		return false;
+	}
 
 	//console shenanigans
 	cout << "Opening window..." << endl;

@@ -13,30 +13,47 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Recoil">
+      <UniqueIdentifier>{636c5344-af67-4be4-b878-cfe03e5f2939}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{ce14c2a8-f317-4a47-a220-50506f94e2da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Recoil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Utilities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Close.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Recoil</Filter>
     </ClCompile>
     <ClCompile Include="Event.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Recoil</Filter>
     </ClCompile>
     <ClCompile Include="Init.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Recoil</Filter>
     </ClCompile>
     <ClCompile Include="Logic.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Recoil</Filter>
     </ClCompile>
     <ClCompile Include="Recoil.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Recoil</Filter>
     </ClCompile>
     <ClCompile Include="Render.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Recoil</Filter>
     </ClCompile>
+    <ClCompile Include="TextureUtils.cpp">
+      <Filter>Source Files\Utilities</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Resources\Graphics\missingTexture">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
