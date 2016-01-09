@@ -11,6 +11,7 @@ elements of the game.
 
 //importing of libraries
 #include <iostream>
+#include <fstream>
 #include <string>
 
 //SFML libraries
@@ -40,6 +41,7 @@ private:
 	//whether the player is currently in a game
 	bool playing;
 public:
+	//!RECOIL
 	//the constructor function, allowing everything to work
 	Recoil();
 
@@ -55,6 +57,11 @@ public:
 	void Render();
 	//run this when user quits game
 	void Close();
+
+	//!SETTINGS
+	int RES_WIDTH;		//resolution horizontally
+	int RES_HEIGHT;		//resolution vertically
+	bool FULLSCREEN;
 
 	//texture and sprite
 	sf::Texture missingTexture;

@@ -12,6 +12,9 @@ game.
 using namespace std;
 
 bool Recoil::Init() {
+	//load settings
+	FileUtils::loadSettings(string("settings.cfg"), &RES_WIDTH, &RES_HEIGHT, &FULLSCREEN);
+
 	//assign variable values here and load assets
 	
 	//attempt load missingTexture texture to sprite
@@ -23,8 +26,16 @@ bool Recoil::Init() {
 	//console shenanigans
 	cout << "Opening window..." << endl;
 
-	//create window
-	window.create(sf::VideoMode(1280, 720), "Recoil");
+	//if the fullscreen option is true
+	if (FULLSCREEN) {
+		//create a fullscreen window
+		window.create(sf::VideoMode(RES_WIDTH, RES_HEIGHT), "Recoil", sf::Style::Fullscreen);
+	}
+	else {
+		//otherwise, create a windowed window
+		window.create(sf::VideoMode(RES_WIDTH, RES_HEIGHT), "Recoil");
+	}
+	
 
 	menuState = 0;
 	playing = false;

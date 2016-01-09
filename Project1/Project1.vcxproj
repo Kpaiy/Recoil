@@ -25,6 +25,7 @@
   <ItemGroup>
     <ClCompile Include="Close.cpp" />
     <ClCompile Include="Event.cpp" />
+    <ClCompile Include="FileUtils.cpp" />
     <ClCompile Include="Init.cpp" />
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="Recoil.cpp" />
@@ -32,7 +33,10 @@
     <ClCompile Include="TextureUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\Resources\Graphics\missingTexture" />
+    <Image Include="resources\graphics\missingTexture.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="settings.cfg" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3EEAD7CE-02DB-400C-9906-4EA93AB795A7}</ProjectGuid>
