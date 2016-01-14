@@ -28,19 +28,11 @@ bool FileUtils::loadSettings(string filename, int* res_width, int* res_height, b
 		//notify console settings file is present
 		cout << "Loading settings from detected file: " << filename << endl;
 
-		//read first string, convert to int and set to horizontal resolution
-		getline(file, read);
-		*res_width = (int)(stof(read));
-		//repeat for resolution height
-		getline(file, read);
-		*res_height = (int)(stof(read));
+		//load values from files into respective variables
+		file >> *res_width >> *res_height >> *fullscreen;
+
 		//notify console
 		cout << "Settings: Resolution set to " << *res_width << "x" << *res_height << endl;
-
-		//read next line, convert to a boolean and set to the fullscreen option
-		getline(file, read);
-		*fullscreen = (bool)(stof(read));
-		//notify console
 		(*fullscreen) ? (cout << "Settings: Fullscreen enabled" << endl) : (cout << "Settings: Fullscreen disabled" << endl);
 
 		//close the file
