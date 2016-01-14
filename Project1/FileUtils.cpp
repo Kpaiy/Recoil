@@ -15,7 +15,7 @@ strict manner, in order to ensure all data is read
 correctly.
 */
 
-//a file to read a pre-existing settings file and save those settings to be used in the game
+//a function to read a pre-existing settings file and save those settings to be used in the game
 bool FileUtils::loadSettings(string filename, int* res_width, int* res_height, bool* fullscreen) {
 	string read;
 	ifstream file;
@@ -28,7 +28,7 @@ bool FileUtils::loadSettings(string filename, int* res_width, int* res_height, b
 		//notify console settings file is present
 		cout << "Loading settings from detected file: " << filename << endl;
 
-		//load values from files into respective variables
+		//load values from file into respective variables
 		file >> *res_width >> *res_height >> *fullscreen;
 
 		//notify console
@@ -37,6 +37,8 @@ bool FileUtils::loadSettings(string filename, int* res_width, int* res_height, b
 
 		//close the file
 		file.close();
+
+		return true;
 	}
 	else {
 		//if not open, it doesn't exist
@@ -49,6 +51,34 @@ bool FileUtils::loadSettings(string filename, int* res_width, int* res_height, b
 		//notify via console
 		cout << "Settings: Generated resolution of " << *res_width << "x" << *res_height << endl;
 		//return false
+		return false;
+	}
+}
+
+//a function to save the current settings to a settings file
+bool FileUtils::saveSettings(string filename, int* res_width, int* res_height, bool* fullscreen) {
+	ofstream file;
+
+	//notify console
+	cout << "Saving settings..." << endl;
+
+	//attempt to access file
+	file.open(filename);
+
+	//check if file is open for writing
+	if (file.is_open()) {
+		//write variables to file
+		file << *res_width << endl << *res_height << endl << *fullscreen;
+		//notify that settings were saved
+		cout << "Settings saved to file: " << filename << endl;
+
+		return true;
+	}
+	else {
+		//if unable to write to file, notify console
+		cout << "Unable to write to file: " << filename << endl;
+		cout << "Unable to save settings" << endl;
+
 		return false;
 	}
 }

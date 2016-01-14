@@ -20,6 +20,7 @@ public:
 class FileUtils {
 public:
 	static bool loadSettings(std::string filename, int* res_width, int* res_height, bool* fullscreen);
+	static bool saveSettings(std::string filename, int* res_width, int* res_height, bool* fullscreen);
 
 	static float stringToFloat(std::string string);
 };

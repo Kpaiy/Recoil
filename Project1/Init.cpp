@@ -14,6 +14,7 @@ using namespace std;
 bool Recoil::Init() {
 	//load settings
 	FileUtils::loadSettings(string("settings.cfg"), &RES_WIDTH, &RES_HEIGHT, &FULLSCREEN);
+	cout << "----------------------" << endl;
 
 	//assign variable values here and load assets
 	

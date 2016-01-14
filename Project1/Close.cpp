@@ -14,6 +14,11 @@ void Recoil::Close() {
 	window.close();
 	//output to console notifying game closed
 	cout << "Recoil closed" << endl;
+	cout << "----------------------" << endl;
+
+	//save settings
+	FileUtils::saveSettings("settings.cfg", &RES_WIDTH, &RES_HEIGHT, &FULLSCREEN);
+
 	//pause the console (WINDOWS ONLY)
 	cout << endl;
 	system("pause");
