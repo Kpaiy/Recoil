@@ -17,7 +17,7 @@ void Recoil::Close() {
 	cout << "----------------------" << endl;
 
 	//save settings
-	FileUtils::saveSettings("settings.cfg", &RES_WIDTH, &RES_HEIGHT, &FULLSCREEN);
+	FileUtils::saveSettings("settings.cfg", RES_WIDTH, RES_HEIGHT, FULLSCREEN);
 
 	//pause the console (WINDOWS ONLY)
 	cout << endl;

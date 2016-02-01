@@ -22,6 +22,7 @@ elements of the game.
 
 //own code
 #include "Utilities.h"
+#include "Textures.h"
 
 class Recoil {
 private:
@@ -40,6 +41,9 @@ private:
 
 	//whether the player is currently in a game
 	bool playing;
+
+	//textures
+	Textures textures;
 public:
 	//!RECOIL
 	//the constructor function, allowing everything to work
@@ -63,8 +67,6 @@ public:
 	int RES_HEIGHT;		//resolution vertically
 	bool FULLSCREEN;
 
-	//texture and sprite
-	sf::Texture missingTexture;
 	sf::Sprite missingSprite;
 
 };

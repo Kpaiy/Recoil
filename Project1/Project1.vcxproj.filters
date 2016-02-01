@@ -19,6 +19,12 @@
     <Filter Include="Source Files\Utilities">
       <UniqueIdentifier>{ce14c2a8-f317-4a47-a220-50506f94e2da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Resource Managers">
+      <UniqueIdentifier>{36058ce5-882b-4780-a8c1-a1f62fe6fd3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resource Managers">
+      <UniqueIdentifier>{259d4e86-a26c-45dd-a452-a55a1225d84b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Recoil.h">
@@ -26,6 +32,9 @@
     </ClInclude>
     <ClInclude Include="Utilities.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>Header Files\Resource Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -53,9 +62,15 @@
     <ClCompile Include="FileUtils.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="Textures.cpp">
+      <Filter>Source Files\Resource Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\graphics\missingTexture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\graphics\dirt.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

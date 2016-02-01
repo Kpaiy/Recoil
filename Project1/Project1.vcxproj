@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Recoil.h" />
+    <ClInclude Include="Textures.h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>
@@ -30,9 +31,11 @@
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="Recoil.cpp" />
     <ClCompile Include="Render.cpp" />
+    <ClCompile Include="Textures.cpp" />
     <ClCompile Include="TextureUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="resources\graphics\dirt.png" />
     <Image Include="resources\graphics\missingTexture.png" />
   </ItemGroup>
   <ItemGroup>

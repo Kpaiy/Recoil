@@ -13,16 +13,16 @@ using namespace std;
 
 bool Recoil::Init() {
 	//load settings
-	FileUtils::loadSettings(string("settings.cfg"), &RES_WIDTH, &RES_HEIGHT, &FULLSCREEN);
+	FileUtils::loadSettings(string("settings.cfg"), RES_WIDTH, RES_HEIGHT, FULLSCREEN);
 	cout << "----------------------" << endl;
 
 	//assign variable values here and load assets
 	
-	//attempt load missingTexture texture to sprite
-	if (!TextureUtils::loadTextureToSprite("resources/graphics/missingTexture.png", &missingTexture, &missingSprite)) {
-		//if unable to load, return false
-		return false;
-	}
+	//load textures
+	textures.load();
+
+	//load sprites
+	missingSprite.setTexture(textures.misc.missing);
 
 	//console shenanigans
 	cout << "Opening window..." << endl;

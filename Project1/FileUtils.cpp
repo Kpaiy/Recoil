@@ -16,7 +16,7 @@ correctly.
 */
 
 //a function to read a pre-existing settings file and save those settings to be used in the game
-bool FileUtils::loadSettings(string filename, int* res_width, int* res_height, bool* fullscreen) {
+bool FileUtils::loadSettings(string filename, int& res_width, int& res_height, bool& fullscreen) {
 	string read;
 	ifstream file;
 
@@ -29,11 +29,11 @@ bool FileUtils::loadSettings(string filename, int* res_width, int* res_height, b
 		cout << "Loading settings from detected file: " << filename << endl;
 
 		//load values from file into respective variables
-		file >> *res_width >> *res_height >> *fullscreen;
+		file >> res_width >> res_height >> fullscreen;
 
 		//notify console
-		cout << "Settings: Resolution set to " << *res_width << "x" << *res_height << endl;
-		(*fullscreen) ? (cout << "Settings: Fullscreen enabled" << endl) : (cout << "Settings: Fullscreen disabled" << endl);
+		cout << "Settings: Resolution set to " << res_width << "x" << res_height << endl;
+		(fullscreen) ? (cout << "Settings: Fullscreen enabled" << endl) : (cout << "Settings: Fullscreen disabled" << endl);
 
 		//close the file
 		file.close();
@@ -46,17 +46,17 @@ bool FileUtils::loadSettings(string filename, int* res_width, int* res_height, b
 		cout << "File not found: " << filename << endl;
 		//load hardcoded settings
 		cout << "Creating stock settings";
-		*res_width = 1280;
-		*res_height = 720;
+		res_width = 1280;
+		res_height = 720;
 		//notify via console
-		cout << "Settings: Generated resolution of " << *res_width << "x" << *res_height << endl;
+		cout << "Settings: Generated resolution of " << res_width << "x" << res_height << endl;
 		//return false
 		return false;
 	}
 }
 
 //a function to save the current settings to a settings file
-bool FileUtils::saveSettings(string filename, int* res_width, int* res_height, bool* fullscreen) {
+bool FileUtils::saveSettings(string filename, int& res_width, int& res_height, bool& fullscreen) {
 	ofstream file;
 
 	//notify console
@@ -68,7 +68,7 @@ bool FileUtils::saveSettings(string filename, int* res_width, int* res_height, b
 	//check if file is open for writing
 	if (file.is_open()) {
 		//write variables to file
-		file << *res_width << endl << *res_height << endl << *fullscreen;
+		file << res_width << endl << res_height << endl << fullscreen;
 		//notify that settings were saved
 		cout << "Settings saved to file: " << filename << endl;
 
