@@ -23,6 +23,7 @@ bool Recoil::Init() {
 
 	//load sprites
 	missingSprite.setTexture(textures.misc.missing);
+	dirtTex.setTexture(textures.terrain.dirtTile);
 
 	//console shenanigans
 	cout << "Opening window..." << endl;

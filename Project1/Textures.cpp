@@ -25,6 +25,8 @@ bool Misc::load() {
 	if (!TextureUtils::loadTexture("resources/graphics/missingTexture.png", missing)) {
 		return false;
 	}
+
+	return true;
 }
 
 Textures::Textures() {
@@ -34,6 +36,13 @@ Textures::Textures() {
 //load each subtexture group
 //if something goes wrong, return false
 bool Textures::load() {
+	//attempt to load terrain textures
+	if (!terrain.load()) {
+		//if something goes wrong, return false
+		return false;
+	}
+
+	//attempt to load miscellaneous textures
 	if (!misc.load()) {
 		return false;
 	}

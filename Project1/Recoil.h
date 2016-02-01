@@ -68,5 +68,6 @@ public:
 	bool FULLSCREEN;
 
 	sf::Sprite missingSprite;
+	sf::Sprite dirtTex;
 
 };
