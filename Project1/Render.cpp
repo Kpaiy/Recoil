@@ -16,7 +16,7 @@ void Recoil::Render() {
 
 	//draw game objects to window
 	window.draw(missingSprite);
-	window.draw(dirtTex);
+	window.draw(dirtTile.sprite);
 
 	//update the display
 	window.display();

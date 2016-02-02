@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Recoil.h" />
+    <ClInclude Include="Terrain.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>
@@ -31,6 +32,7 @@
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="Recoil.cpp" />
     <ClCompile Include="Render.cpp" />
+    <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="TextureUtils.cpp" />
   </ItemGroup>

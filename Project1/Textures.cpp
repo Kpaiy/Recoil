@@ -9,7 +9,7 @@
 //load all terrain textures
 bool Terrain::load() {
 	//if something messed up, return false
-	if (!TextureUtils::loadTexture("resources/graphics/dirt.png", dirtTile)) {
+	if (!TextureUtils::loadTexture("resources/graphics/dirt.png", dirt)) {
 		return false;
 	}
 	

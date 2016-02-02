@@ -23,6 +23,7 @@ elements of the game.
 //own code
 #include "Utilities.h"
 #include "Textures.h"
+#include "Terrain.h"
 
 class Recoil {
 private:
@@ -66,8 +67,10 @@ public:
 	int RES_WIDTH;		//resolution horizontally
 	int RES_HEIGHT;		//resolution vertically
 	bool FULLSCREEN;
+	int TILE_SIZE;		//size of each tile unit in pixels
 
 	sf::Sprite missingSprite;
-	sf::Sprite dirtTex;
+
+	Tile dirtTile;
 
 };

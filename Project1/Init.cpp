@@ -12,6 +12,9 @@ game.
 using namespace std;
 
 bool Recoil::Init() {
+	//declare constants
+	TILE_SIZE = 100;
+
 	//load settings
 	FileUtils::loadSettings(string("settings.cfg"), RES_WIDTH, RES_HEIGHT, FULLSCREEN);
 	cout << "----------------------" << endl;
@@ -23,7 +26,7 @@ bool Recoil::Init() {
 
 	//load sprites
 	missingSprite.setTexture(textures.misc.missing);
-	dirtTex.setTexture(textures.terrain.dirtTile);
+	dirtTile = Tile(textures.terrain.dirt, sf::Vector2f(100.0,100.0));
 
 	//console shenanigans
 	cout << "Opening window..." << endl;

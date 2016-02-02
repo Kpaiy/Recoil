@@ -25,6 +25,9 @@
     <Filter Include="Source Files\Resource Managers">
       <UniqueIdentifier>{259d4e86-a26c-45dd-a452-a55a1225d84b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Textures">
+      <UniqueIdentifier>{b300aed5-27ed-4e9e-aba3-7dad88465e8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Recoil.h">
@@ -35,6 +38,9 @@
     </ClInclude>
     <ClInclude Include="Textures.h">
       <Filter>Header Files\Resource Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -65,13 +71,16 @@
     <ClCompile Include="Textures.cpp">
       <Filter>Source Files\Resource Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\graphics\missingTexture.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Textures</Filter>
     </Image>
     <Image Include="resources\graphics\dirt.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Textures</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>

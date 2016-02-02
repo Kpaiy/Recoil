@@ -12,7 +12,7 @@ public:
 	Terrain();
 	bool load();
 
-	sf::Texture dirtTile;
+	sf::Texture dirt;
 };
 
 class Misc {

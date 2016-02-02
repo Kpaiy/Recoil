@@ -53,6 +53,8 @@ int Recoil::Execute() {
 	
 	//run the cleanup function
 	Close();
+
+	return 0;
 }
 
 //this is run when the application is opened
