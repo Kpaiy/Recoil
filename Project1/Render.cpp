@@ -16,7 +16,11 @@ void Recoil::Render() {
 
 	//draw game objects to window
 	window.draw(missingSprite);
-	window.draw(dirtTile.sprite);
+	
+	//iterate through tiles container
+	for (std::vector<Tile>::iterator it = tiles.begin(); it != tiles.end(); ++it) {
+		window.draw(it->sprite);
+	}
 
 	//update the display
 	window.display();

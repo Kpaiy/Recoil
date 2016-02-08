@@ -13,6 +13,7 @@ elements of the game.
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
 //SFML libraries
 #include <SFML\System.hpp>
@@ -71,6 +72,6 @@ public:
 
 	sf::Sprite missingSprite;
 
-	Tile dirtTile;
-
+	//container for all terrain tile pointers
+	std::vector<Tile> tiles;
 };
