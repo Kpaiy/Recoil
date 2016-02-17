@@ -46,6 +46,9 @@ private:
 
 	//textures
 	Textures textures;
+
+	bool generateTiles(std::vector<std::vector<char>> map);
+
 public:
 	//!RECOIL
 	//the constructor function, allowing everything to work

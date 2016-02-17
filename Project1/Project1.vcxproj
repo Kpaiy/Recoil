@@ -29,6 +29,7 @@
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="FileUtils.cpp" />
     <ClCompile Include="Init.cpp" />
+    <ClCompile Include="LevelUtils.cpp" />
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="Recoil.cpp" />
     <ClCompile Include="Render.cpp" />

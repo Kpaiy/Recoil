@@ -26,7 +26,23 @@ bool Recoil::Init() {
 
 	//load sprites
 	missingSprite.setTexture(textures.misc.missing);
-	Tile(textures.terrain.dirt, sf::Vector2f(100.0,100.0), tiles);
+
+	//shabby code to generate a two dimensional container for tile generation
+	//just for testing, will have a function to generate levels later (duh)
+	char map0[5] = { 'd','d','d','d','d' };
+	char map1[5] = { 'd',' ',' ',' ','d' };
+	vector<char> vmap0;
+	vector<char> vmap1;
+	vmap0.assign(map0, map0 + 5);
+	vmap1.assign(map1, map1 + 5);
+	vector<vector<char>> map;
+	map.push_back(vmap0);
+	map.push_back(vmap1);
+	map.push_back(vmap1);
+	map.push_back(vmap1);
+	map.push_back(vmap0);
+	
+	generateTiles(map);
 
 	//console shenanigans
 	cout << "Opening window..." << endl;
