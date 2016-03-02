@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LevelChunks.h" />
     <ClInclude Include="Recoil.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Textures.h" />
@@ -29,6 +30,7 @@
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="FileUtils.cpp" />
     <ClCompile Include="Init.cpp" />
+    <ClCompile Include="LevelChunks.cpp" />
     <ClCompile Include="LevelUtils.cpp" />
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="Recoil.cpp" />
@@ -42,6 +44,7 @@
     <Image Include="resources\graphics\missingTexture.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="chunks.rcl" />
     <None Include="settings.cfg" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

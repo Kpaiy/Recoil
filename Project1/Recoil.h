@@ -25,6 +25,7 @@ elements of the game.
 #include "Utilities.h"
 #include "Textures.h"
 #include "Terrain.h"
+#include "LevelChunks.h"
 
 class Recoil {
 private:
@@ -47,7 +48,12 @@ private:
 	//textures
 	Textures textures;
 
+	//level chunks class
+	//LevelChunks chunks;
+
+	//level generation functions
 	bool generateTiles(std::vector<std::vector<char>> map);
+	std::vector<std::vector<char>> generateLevel();
 
 public:
 	//!RECOIL
@@ -72,6 +78,7 @@ public:
 	int RES_HEIGHT;		//resolution vertically
 	bool FULLSCREEN;
 	int TILE_SIZE;		//size of each tile unit in pixels
+	int CHUNK_WIDTH;	//size of each terrain chunk in tiles
 
 	sf::Sprite missingSprite;
 

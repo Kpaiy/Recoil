@@ -14,6 +14,7 @@ using namespace std;
 bool Recoil::Init() {
 	//declare constants
 	TILE_SIZE = 100;
+	CHUNK_WIDTH = 25;
 
 	//load settings
 	FileUtils::loadSettings(string("settings.cfg"), RES_WIDTH, RES_HEIGHT, FULLSCREEN);
@@ -42,7 +43,8 @@ bool Recoil::Init() {
 	map.push_back(vmap1);
 	map.push_back(vmap0);
 	
-	generateTiles(map);
+	//generateTiles(map);
+	generateTiles(generateLevel());
 
 	//console shenanigans
 	cout << "Opening window..." << endl;

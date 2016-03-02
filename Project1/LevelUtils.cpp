@@ -29,6 +29,17 @@ bool Recoil::generateTiles(vector<vector<char>> map) {
 		}
 	}
 
-
+	//if there are no problems, return true
 	return true;
+}
+
+vector<vector<char>> Recoil::generateLevel() {
+	//stupid stub code
+	vector<vector<char>> dummy;
+	char dumber[] = {'d','d','d','d','d'};
+	vector<char> dumbest(dumber, dumber + 5);
+	dummy.push_back(dumbest);
+	dummy.push_back(dumbest);
+	
+	return dummy;
 }

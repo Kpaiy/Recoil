@@ -42,6 +42,9 @@
     <ClInclude Include="Terrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LevelChunks.h">
+      <Filter>Header Files\Resource Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Close.cpp">
@@ -77,6 +80,9 @@
     <ClCompile Include="LevelUtils.cpp">
       <Filter>Source Files\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="LevelChunks.cpp">
+      <Filter>Source Files\Resource Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\graphics\missingTexture.png">
@@ -88,6 +94,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="settings.cfg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="chunks.rcl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
