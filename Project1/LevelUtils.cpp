@@ -34,12 +34,23 @@ bool Recoil::generateTiles(vector<vector<char>> map) {
 }
 
 vector<vector<char>> Recoil::generateLevel() {
-	//stupid stub code
-	vector<vector<char>> dummy;
-	char dumber[] = {'d','d','d','d','d'};
-	vector<char> dumbest(dumber, dumber + 5);
-	dummy.push_back(dumbest);
-	dummy.push_back(dumbest);
+	//some driver code
+	//will obviously be replaced with actual level generation
+	char map0[5] = { 'd','d','d','d','d' };
+	char map1[5] = { 'd',' ',' ',' ','d' };
+	char map2[5] = { 'd',' ','d',' ','d' };
+	vector<char> vmap0;
+	vector<char> vmap1;
+	vector<char> vmap2;
+	vmap0.assign(map0, map0 + 5);
+	vmap1.assign(map1, map1 + 5);
+	vmap2.assign(map2, map2 + 5);
+	vector<vector<char>> map;
+	map.push_back(vmap0);
+	map.push_back(vmap1);
+	map.push_back(vmap2);
+	map.push_back(vmap1);
+	map.push_back(vmap0);
 	
-	return dummy;
+	return map;
 }

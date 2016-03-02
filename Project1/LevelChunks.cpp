@@ -13,12 +13,8 @@ level generation.
 
 using namespace std;
 
-LevelChunks::LevelChunks() {
-
-}
-
 //loads the chunks file into this class structure
-bool LevelChunks::load(string filename, int chunkWidth) {
+bool Recoil::loadAllChunks(string filename, int chunkWidth) {
 	//declare input file
 	ifstream file;
 	
@@ -32,8 +28,6 @@ bool LevelChunks::load(string filename, int chunkWidth) {
 
 		//create temp string
 		string tempString;
-		//first read
-		file >> tempString;
 		
 		//load each chunk
 		loadChunk(chunk1, file, tempString);
@@ -60,7 +54,10 @@ bool LevelChunks::load(string filename, int chunkWidth) {
 	}
 }
 
-void LevelChunks::loadChunk(vector<vector<vector<char>>> &chunkContainer, ifstream &file, string &tempString) {
+void Recoil::loadChunk(vector<vector<vector<char>>> &chunkContainer, ifstream &file, string &tempString) {
+	//prepare a read
+	file >> tempString;
+
 	//create temporary vectors
 	vector<vector<char>> chunk;
 	vector<char> tempVector;

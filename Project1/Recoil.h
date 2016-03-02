@@ -25,7 +25,6 @@ elements of the game.
 #include "Utilities.h"
 #include "Textures.h"
 #include "Terrain.h"
-#include "LevelChunks.h"
 
 class Recoil {
 private:
@@ -48,8 +47,22 @@ private:
 	//textures
 	Textures textures;
 
-	//level chunks class
-	//LevelChunks chunks;
+	//level chunks management
+	
+	//chunk containers
+	std::vector<std::vector<std::vector<char>>> chunk1;			//Chunk containers are classed based their position on the
+	std::vector<std::vector<std::vector<char>>> chunk2;			//numpad after the keyword "chunk".
+	std::vector<std::vector<std::vector<char>>> chunk3;			//
+	std::vector<std::vector<std::vector<char>>> chunk4;			//  789			i.e chunk7 contains tiles designed to fit
+	std::vector<std::vector<std::vector<char>>> chunk5;			//  456			in the top left of a level.
+	std::vector<std::vector<std::vector<char>>> chunk6;			//  123
+	std::vector<std::vector<std::vector<char>>> chunk7;
+	std::vector<std::vector<std::vector<char>>> chunk8;
+	std::vector<std::vector<std::vector<char>>> chunk9;
+
+	bool loadAllChunks(std::string filename, int chunkWidth);
+	void loadChunk(std::vector<std::vector<std::vector<char>>> &chunkContainer, std::ifstream &file, std::string &tempString);
+	
 
 	//level generation functions
 	bool generateTiles(std::vector<std::vector<char>> map);
