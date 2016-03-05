@@ -14,6 +14,7 @@ elements of the game.
 #include <fstream>
 #include <string>
 #include <vector>
+#include <ctime>
 
 //SFML libraries
 #include <SFML\System.hpp>
@@ -66,7 +67,8 @@ private:
 
 	//level generation functions
 	bool generateTiles(std::vector<std::vector<char>> map);
-	std::vector<std::vector<char>> generateLevel();
+	std::vector<std::vector<char>> generateLevel(sf::Vector2i dimensions);
+	std::vector<std::vector<char>> randChunk(std::vector<std::vector<std::vector<char>>> chunk);
 
 public:
 	//!RECOIL

@@ -13,8 +13,11 @@ using namespace std;
 
 bool Recoil::Init() {
 	//declare constants
-	TILE_SIZE = 100;
+	TILE_SIZE = 50;
 	CHUNK_WIDTH = 25;
+
+	//set a seed for random generation
+	srand(time(0));
 
 	//load settings
 	FileUtils::loadSettings(string("settings.cfg"), RES_WIDTH, RES_HEIGHT, FULLSCREEN);
@@ -32,7 +35,7 @@ bool Recoil::Init() {
 	missingSprite.setTexture(textures.misc.missing);
 	
 	//generateTiles(map);
-	generateTiles(generateLevel());
+	generateTiles(generateLevel(sf::Vector2i(3,3)));
 
 	//console shenanigans
 	cout << "Opening window..." << endl;
@@ -46,7 +49,12 @@ bool Recoil::Init() {
 		//otherwise, create a windowed window
 		window.create(sf::VideoMode(RES_WIDTH, RES_HEIGHT), "Recoil");
 	}
-	
+
+	//set up the game camera
+	//NOTE: the size and centre of the camera have been drastically increased in order to see the random level generation
+	camera.setSize(6 * RES_WIDTH, 6 * RES_HEIGHT);
+	camera.setCenter(3 * RES_WIDTH, 3 * RES_HEIGHT);
+	window.setView(camera);	
 
 	menuState = 0;
 	playing = false;

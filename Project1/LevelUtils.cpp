@@ -33,7 +33,13 @@ bool Recoil::generateTiles(vector<vector<char>> map) {
 	return true;
 }
 
-vector<vector<char>> Recoil::generateLevel() {
+/*
+This function takes in two numbers, the width and height of the level
+in chunks. This function then stitches together the appropriate amount
+and types of chunks together to fit the dimensions, creating a level.
+*/
+vector<vector<char>> Recoil::generateLevel(sf::Vector2i dimensions) {
+	/*
 	//some driver code
 	//will obviously be replaced with actual level generation
 	char map0[5] = { 'd','d','d','d','d' };
@@ -51,6 +57,91 @@ vector<vector<char>> Recoil::generateLevel() {
 	map.push_back(vmap2);
 	map.push_back(vmap1);
 	map.push_back(vmap0);
+	*/
 	
-	return map;
+	//a temporary chunk used for stitching purposes
+	vector<vector<char>> tempChunk;
+	//the output level
+	vector<vector<char>> level;
+
+	//for each y chunk in dimensions
+	for (int y = 0; y != dimensions.y; y++) {
+		//iterate through x values
+		for (int x = 0; x != dimensions.x; x++) {
+			//if the first element in the row
+			if (x == 0) {
+				//pick a random chunk of suitable type
+				//if in the top left corner
+				if (y == 0) {
+					//pick a random top-left chunk
+					tempChunk = randChunk(chunk7);
+				} else if (y == dimensions.y - 1) {
+					//if along the bottom left
+					//pick a random bottom-left chunk
+					tempChunk = randChunk(chunk1);
+				} else {
+					//otherwise, it is of orientation middle-left
+					//pick a random middle-left chunk
+					tempChunk = randChunk(chunk4);
+				}
+				//append the chunk to the level container
+				for (vector<vector<char>>::iterator row = tempChunk.begin(); row != tempChunk.end(); ++row) {
+					//append row by row to the level
+					level.push_back(*row);
+				}
+			} else {
+				//if chunk is not first chunk in row
+				//if last chunk in row of chunks
+				if (x == dimensions.x - 1) {
+					//if on the top-right
+					if (y == 0) {
+						//pick a random top-right chunk
+						tempChunk = randChunk(chunk9);
+					} else if (y == dimensions.y - 1) {
+						//if along the bottom right
+						//pick a random bottom-right chunk
+						tempChunk = randChunk(chunk3);
+					} else {
+						//otherwise, it is of orientation middle-right
+						//pick a random middle-right chunk
+						tempChunk = randChunk(chunk6);
+					}
+				} else {
+					//otherwise, is not along either left or right edge
+					//if on the top-middle
+					if (y == 0) {
+						//pick a random top-middle chunk
+						tempChunk = randChunk(chunk8);
+					} else if (y == dimensions.y - 1) {
+						//if along the bottom-middle
+						//pick a random bottom-middle chunk
+						tempChunk = randChunk(chunk2);
+					} else {
+						//otherwise, it is of orientation middle-middle
+						//pick a random middle-middle chunk
+						tempChunk = randChunk(chunk5);
+					}
+				}
+				//iterate through each row of the chunk to add
+				for (int row = 0; row != tempChunk.size(); ++row) {
+					//iterate through each char
+					for (int tile = 0; tile != tempChunk[y].size(); ++tile) {
+						//append the char to the appropriate row
+						level[row + (y * CHUNK_WIDTH)].push_back(tempChunk[row][tile]);
+					}
+				}
+			}
+		}
+
+	}
+
+	return level;
+}
+
+//returns a random chunk from a list of chunks
+vector<vector<char>> Recoil::randChunk(vector<vector<vector<char>>> chunkType) {
+	//pick a random number between zero and the size of the container - 1
+	int random = rand() % chunkType.size();
+	//return the chunk with the corresponding index in the chunk container
+	return chunkType[random];
 }
