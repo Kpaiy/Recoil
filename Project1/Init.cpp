@@ -52,8 +52,8 @@ bool Recoil::Init() {
 
 	//set up the game camera
 	//NOTE: the size and centre of the camera have been drastically increased in order to see the random level generation
-	camera.setSize(6 * RES_WIDTH, 6 * RES_HEIGHT);
-	camera.setCenter(3 * RES_WIDTH, 3 * RES_HEIGHT);
+	camera.setSize(RES_WIDTH, RES_HEIGHT);
+	camera.setCenter(0.5 * RES_WIDTH, 0.5 * RES_HEIGHT);
 	window.setView(camera);	
 
 	menuState = 0;

@@ -45,6 +45,12 @@
     <ClInclude Include="LevelChunks.h">
       <Filter>Header Files\Resource Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Close.cpp">
@@ -82,6 +88,12 @@
     </ClCompile>
     <ClCompile Include="LevelChunks.cpp">
       <Filter>Source Files\Resource Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

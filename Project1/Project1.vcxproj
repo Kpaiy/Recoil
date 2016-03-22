@@ -19,7 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="LevelChunks.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Recoil.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Textures.h" />
@@ -27,12 +29,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Close.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="FileUtils.cpp" />
     <ClCompile Include="Init.cpp" />
     <ClCompile Include="LevelChunks.cpp" />
     <ClCompile Include="LevelUtils.cpp" />
     <ClCompile Include="Logic.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Recoil.cpp" />
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="Terrain.cpp" />
