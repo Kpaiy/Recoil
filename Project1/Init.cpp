@@ -32,7 +32,14 @@ bool Recoil::Init() {
 	loadAllChunks("chunks.rcl", CHUNK_WIDTH);
 
 	//load sprites
+	//temporary things
 	missingSprite.setTexture(textures.misc.missing);
+	vector<sf::Texture> tempVec;
+	tempVec.push_back(textures.misc.missing);
+	tempAnimations.push_back(tempVec);
+
+	//temporary player constructor
+	player = Player(sf::Vector2f(0.5, 0.5), tempAnimations);
 	
 	//generateTiles(map);
 	generateTiles(generateLevel(sf::Vector2i(3,3)));
@@ -52,8 +59,8 @@ bool Recoil::Init() {
 
 	//set up the game camera
 	//NOTE: the size and centre of the camera have been drastically increased in order to see the random level generation
-	camera.setSize(RES_WIDTH, RES_HEIGHT);
-	camera.setCenter(0.5 * RES_WIDTH, 0.5 * RES_HEIGHT);
+	camera.setSize(6 * RES_WIDTH, 6 * RES_HEIGHT);
+	camera.setCenter(3 * RES_WIDTH, 3 * RES_HEIGHT);
 	window.setView(camera);	
 
 	menuState = 0;

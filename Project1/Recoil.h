@@ -1,3 +1,5 @@
+#pragma once
+
 //Recoil.h
 
 /*
@@ -6,8 +8,6 @@ all of my source code in an easy to understand manner.
 This file contains a Recoil class, which will handle all
 elements of the game.
 */
-
-#pragma once
 
 //importing of libraries
 #include <iostream>
@@ -26,6 +26,7 @@ elements of the game.
 #include "Utilities.h"
 #include "Textures.h"
 #include "Terrain.h"
+#include "Character.h"
 
 class Recoil {
 private:
@@ -95,8 +96,12 @@ public:
 	int TILE_SIZE;		//size of each tile unit in pixels
 	int CHUNK_WIDTH;	//size of each terrain chunk in tiles
 
+	//temporary things
 	sf::Sprite missingSprite;
+	std::vector<std::vector<sf::Texture>> tempAnimations;
 
 	//container for all terrain tile pointers
 	std::vector<Tile> tiles;
+	
+	Player player;
 };

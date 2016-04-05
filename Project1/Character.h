@@ -1,16 +1,62 @@
 #pragma once
-#include "Enemy.h" //has Character base class
+#include "Recoil.h"
 
-//Player.h
+//Enemy.h
 
 /*
-This file contains all player relevant 
-classes. The player class will extend 
-off the basic Character class, in 
-Enemy.h.
+This file will contain all of the enemy classes in
+Recoil. These will all be extensions of the class
+Character which I will make, which will also be 
+in this file allowing me to easily manipulate 
+these enemies through functions, as functions will 
+be able to accept all kinds of enemies due to 
+polymorphism.
 */
 
-/*
+//projectile template
+class Projectile {
+public:
+	float projectileVelocity;	//velocity of the projectile
+	bool projectileGravity;		//whether the projectile experiences gravity
+	float damage;				//damage inflicted per projectile
+	float recoil;				//velocity on player from each shot of weapon
+	float splashDamage;			//splash damage, if applicable
+	float splashRange;			//splash range, if applicable
+
+	bool hurtsPlayer;			//whether the projectile can harm the player
+
+	sf::Sprite sprite;			//sprite for the projectile
+};
+
+//base character for enemies and player
+class Character {
+public:
+	//sets the animation for the character
+	bool setAnimation(int newSet, int newFrame = 0);
+	//cycles between frames
+	void nextFrame();
+
+	//list of animations, which are lists of textures
+	std::vector<std::vector<sf::Texture>> animations;
+	//current animation set index
+	int currentAnimation;
+	int currentFrame;
+
+	//character sprite
+	sf::Sprite sprite;
+
+	//character name
+	std::string charName;
+
+	float health;			//health of a character
+	int maxHealth;			//max health of a character
+
+	bool doesClip;			//whether the character can pass through terrain
+
+	bool usesGravity;		//whether an object is affected by gravity or not
+	sf::Vector2f velocity;	//current velocity of the character
+};
+
 class Weapon {
 public:
 	//weapon constructor
@@ -63,8 +109,10 @@ public:
 
 class Player : public Character {
 public:
+	//empty constructor
+	Player();
 	//player constructor
-	Player(sf::Vector2f spawnPos, std::vector<std::vector<sf::Texture>> animations, float health = 100, int maxHealth = 100, int score = 0);
+	Player(sf::Vector2f spawnPos, std::vector<std::vector<sf::Texture>> &animations, float health = 100, int maxHealth = 100, int score = 0);
 
 	int score;						//player score
 
@@ -72,5 +120,3 @@ public:
 	std::vector<Weapon> weapons;	//list of weapons
 	int equippedWeapon;				//index of the weapon the player is currently using
 };
-
-*/

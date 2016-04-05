@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="LevelChunks.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Recoil.h" />
