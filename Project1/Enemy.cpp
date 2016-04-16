@@ -62,3 +62,72 @@ void Character::nextFrame() {
 		sprite.setTexture(animations[currentAnimation][currentFrame]);
 	}
 }
+
+//moves the sprite, factoring in gravity if applicable
+void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles) {
+	//if the character uses gravity
+	if(usesGravity) {
+		//accelerate the character using acceleration strength and how long they've been accelerated
+		velocity.y += gravity * deltaTime;
+	}
+
+	//move the sprite by the x velocity
+	sprite.move(velocity.x * deltaTime, 0);
+	//if the character cannot clip through terrain
+	if(doesClip) {
+		//iterate through terrain tiles
+		for (vector<Tile>::iterator it = terrainTiles.begin(); it != terrainTiles.end(); ++it) {
+			sf::FloatRect charRect = sprite.getGlobalBounds();
+			sf::FloatRect tileRect = it->sprite.getGlobalBounds();
+			//if the character collides with the tile
+			if (charRect.intersects(tileRect)) {
+				//if x velocity is positive
+				if (velocity.x >= 0) {
+					//find the distance from the right edge of character and left edge of tile
+					float overlap = tileRect.left - (charRect.left + charRect.width);
+					//move the player by the found distance
+					sprite.move(overlap, 0);
+				}
+				else {
+					//otherwise, find the distance between the right edge of tile and left edge of character
+					float overlap = tileRect.left + tileRect.width - charRect.left;
+					//move the player by the found distance
+					sprite.move(overlap, 0);
+				}
+				//set the x velocity to zero
+				velocity.x = 0;
+
+			}
+		}
+	}
+
+	//move sprite by y velocity
+	sprite.move(0, velocity.y * deltaTime);
+	//if the character cannot clip through terrain
+	if (doesClip) {
+		//iterate through terrain tiles
+		for (vector<Tile>::iterator it = terrainTiles.begin(); it != terrainTiles.end(); ++it) {
+			sf::FloatRect charRect = sprite.getGlobalBounds();
+			sf::FloatRect tileRect = it->sprite.getGlobalBounds();
+			//if the character collides with the tile
+			if (charRect.intersects(tileRect)) {
+				//if y velocity is positive
+				if (velocity.y >= 0) {
+					//find the distance from the bottom edge of character and top edge of tile
+					float overlap = tileRect.top - (charRect.top + charRect.height);
+					//move the player by the found distance
+					sprite.move(0, overlap);
+				}
+				else {
+					//otherwise, find the distance between the bottom edge of tile and top edge of character
+					float overlap = tileRect.top + tileRect.height - charRect.top;
+					//move the player by the found distance
+					sprite.move(0, overlap);
+				}
+				//set the y velocity to zero
+				velocity.y = 0;
+
+			}
+		}
+	}
+}

@@ -28,6 +28,8 @@ elements of the game.
 #include "Terrain.h"
 #include "Character.h"
 
+#define PI 3.14159265358975323846264338327950
+
 class Recoil {
 private:
 	//whether the game is running or not
@@ -96,12 +98,20 @@ public:
 	int TILE_SIZE;		//size of each tile unit in pixels
 	int CHUNK_WIDTH;	//size of each terrain chunk in tiles
 
+	//GAME CONSTANTS
+	float GRAVITY;		//acceleration due to gravity
+
+	//CLOCK AND TIME
+	sf::Clock clock;
+	float deltaTime;
+
 	//temporary things
 	sf::Sprite missingSprite;
 	std::vector<std::vector<sf::Texture>> tempAnimations;
 
 	//container for all terrain tile pointers
 	std::vector<Tile> tiles;
-	
+
+	//player
 	Player player;
 };

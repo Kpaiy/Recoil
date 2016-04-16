@@ -1,5 +1,18 @@
 #pragma once
-#include "Recoil.h"
+
+#include <iostream>
+#include <cmath>
+
+//SFML libraries
+#include <SFML\System.hpp>
+#include <SFML\Window.hpp>
+#include <SFML\Graphics.hpp>
+#include <SFML\Audio.hpp>
+
+//own code
+#include "Terrain.h"
+
+#define PI 3.14159265358975323846264338327950
 
 //Enemy.h
 
@@ -36,6 +49,9 @@ public:
 	//cycles between frames
 	void nextFrame();
 
+	//moves the sprite depending on their velocity, and factors in gravity
+	void move(float gravity, float deltaTime, std::vector<Tile> &terrainTiles);
+
 	//list of animations, which are lists of textures
 	std::vector<std::vector<sf::Texture>> animations;
 	//current animation set index
@@ -52,6 +68,7 @@ public:
 	int maxHealth;			//max health of a character
 
 	bool doesClip;			//whether the character can pass through terrain
+	bool isGrounded;		//whether the player is standing on the ground
 
 	bool usesGravity;		//whether an object is affected by gravity or not
 	sf::Vector2f velocity;	//current velocity of the character
@@ -62,7 +79,7 @@ public:
 	//weapon constructor
 	Weapon(std::string weaponName, sf::Texture &weaponIcon, std::vector<std::vector<sf::Texture>> &frontAnimations, std::vector<std::vector<sf::Texture>> &backAnimations,
 		bool isAutomatic, std::string projectileType, int projectiles, float projectileVelocity, bool projectileGravity, float accuracy, float fireRate, float recoil,
-		float splashDamage = -1, float splashRange = -1);
+		float splashDamage = 0, float splashRange = 0);
 	//fire weapon
 	void fire();
 
@@ -112,7 +129,7 @@ public:
 	//empty constructor
 	Player();
 	//player constructor
-	Player(sf::Vector2f spawnPos, std::vector<std::vector<sf::Texture>> &animations, float health = 100, int maxHealth = 100, int score = 0);
+	Player(sf::Vector2f spawnPos, std::vector<std::vector<sf::Texture>> &animations, std::vector<Weapon> weapons, float health = 100, int maxHealth = 100, int score = 0);
 
 	int score;						//player score
 

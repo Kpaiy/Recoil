@@ -91,12 +91,18 @@ void Weapon::nextFrame() {
 	}
 }
 
-Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture>> &animations, float health, int maxHealth, int score) {
+Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture>> &animations, vector<Weapon> weapons, float health, int maxHealth, int score) {
+	//set console character name
+	charName = "Player";
+
 	//set variables
 	this->animations = animations;
 	this->health = health;
 	this->maxHealth = maxHealth;
 	this->score = score;
+
+	doesClip = true;
+	usesGravity = true;
 
 	//animation variables
 	currentAnimation = 0;
@@ -104,6 +110,8 @@ Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture>> &animations, f
 
 	//sprite creation
 	sprite.setTexture(animations[currentAnimation][currentFrame]);
+	//position the sprite
+	sprite.setPosition(spawnPos);
 }
 
 Player::Player() {

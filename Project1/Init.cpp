@@ -16,6 +16,8 @@ bool Recoil::Init() {
 	TILE_SIZE = 50;
 	CHUNK_WIDTH = 25;
 
+	GRAVITY = 9.8;
+
 	//set a seed for random generation
 	srand(time(0));
 
@@ -37,9 +39,10 @@ bool Recoil::Init() {
 	vector<sf::Texture> tempVec;
 	tempVec.push_back(textures.misc.missing);
 	tempAnimations.push_back(tempVec);
+	vector<Weapon> tempWeaps;
 
 	//temporary player constructor
-	player = Player(sf::Vector2f(0.5, 0.5), tempAnimations);
+	player = Player(sf::Vector2f((float)500, (float)500), tempAnimations, tempWeaps);
 	
 	//generateTiles(map);
 	generateTiles(generateLevel(sf::Vector2i(3,3)));
