@@ -14,6 +14,10 @@ void Recoil::Logic() {
 	//taken as seconds so multiplication is simple
 	deltaTime = clock.restart().asSeconds();
 
+	//temporary testing code
+	player.control(0, true, deltaTime);
+
 	//move the player
 	player.move(GRAVITY, deltaTime, tiles);
+
 }

@@ -101,6 +101,11 @@ Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture>> &animations, v
 	this->maxHealth = maxHealth;
 	this->score = score;
 
+	//player movement stats
+	walkAccel = 3;
+	walkSpeed = 5;
+	jumpVelocity = 2;
+
 	doesClip = true;
 	usesGravity = true;
 
@@ -116,4 +121,23 @@ Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture>> &animations, v
 
 Player::Player() {
 
+}
+
+void Player::control(int moveX, bool jump, float deltaTime) {
+	//if the player is on the ground
+	if (isGrounded) {
+		//if the player is below the max walk speed
+		if (velocity.x < walkSpeed) {
+			//move the player horizontally according to moveX and deltaTime
+			velocity.x += walkAccel * deltaTime * moveX;
+		}
+
+		//if the player jumped
+		if (jump) {
+			//set the vertical speed to the jump speed
+			velocity.y = -jumpVelocity;
+			//set isGrounded to false
+			isGrounded = false;
+		}
+	}
 }

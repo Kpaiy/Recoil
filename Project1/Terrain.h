@@ -13,7 +13,7 @@ to game terrain blocks and level generation.
 class Tile {
 public:
 	Tile();
-	Tile(sf::Texture& tileTexture, sf::Vector2f position, std::vector<Tile>& tilePointers);
+	Tile(sf::Texture& tileTexture, sf::Vector2f position, std::vector<Tile>& tilePointers, float friction = 0.8);
 
 	//tile graphic
 	sf::Sprite sprite;

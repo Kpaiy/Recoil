@@ -101,6 +101,9 @@ void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles)
 		}
 	}
 
+	//friction value of terrain being collided with
+	float friction;
+
 	//move sprite by y velocity
 	sprite.move(0, velocity.y * deltaTime);
 	//if the character cannot clip through terrain
@@ -117,6 +120,10 @@ void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles)
 					float overlap = tileRect.top - (charRect.top + charRect.height);
 					//move the player by the found distance
 					sprite.move(0, overlap);
+					//save the friction value of the tile
+					friction = it->friction;
+					//set isGrounded to true
+					isGrounded = true;
 				}
 				else {
 					//otherwise, find the distance between the bottom edge of tile and top edge of character
@@ -126,8 +133,19 @@ void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles)
 				}
 				//set the y velocity to zero
 				velocity.y = 0;
-
+				
 			}
 		}
+	}
+
+	//if the y velocity is not equal to zero
+	if (velocity.y != 0) {
+		//set isGrounded to false
+		isGrounded = false;
+	}
+
+	//if the player is grounded, calculate friction on x velocity
+	if (isGrounded) {
+		velocity.x -= velocity.x * friction * deltaTime;
 	}
 }

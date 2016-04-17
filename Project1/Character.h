@@ -131,7 +131,14 @@ public:
 	//player constructor
 	Player(sf::Vector2f spawnPos, std::vector<std::vector<sf::Texture>> &animations, std::vector<Weapon> weapons, float health = 100, int maxHealth = 100, int score = 0);
 
+	//applies player input
+	void control(int moveX, bool jump, float deltaTime);
+
 	int score;						//player score
+
+	float walkAccel;				//player acceleration when walking on the ground
+	float walkSpeed;				//max speed the player can reach while walking
+	float jumpVelocity;				//velocity generated when the player jumps
 
 	//weapons
 	std::vector<Weapon> weapons;	//list of weapons
