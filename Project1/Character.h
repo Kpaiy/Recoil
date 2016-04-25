@@ -52,6 +52,9 @@ public:
 	//moves the sprite depending on their velocity, and factors in gravity
 	void move(float gravity, float deltaTime, std::vector<Tile> &terrainTiles);
 
+	//finds the center of the character
+	sf::Vector2f center();
+
 	//list of animations, which are lists of textures
 	std::vector<std::vector<sf::Texture>> animations;
 	//current animation set index

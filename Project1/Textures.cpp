@@ -29,6 +29,20 @@ bool Misc::load() {
 	return true;
 }
 
+Protag::Protag() {
+
+}
+
+bool Protag::load() {
+	//return false if something goes wrong during loading of each texture
+	if (!TextureUtils::loadTexture("resources/graphics/tempPlayer.png", idle)) {
+		return false;
+	}
+
+	return true;
+}
+
+
 Textures::Textures() {
 
 }
@@ -42,10 +56,14 @@ bool Textures::load() {
 		return false;
 	}
 
+	//load player textures
+	if (!player.load()) {
+		return false;
+	}
+
 	//attempt to load miscellaneous textures
 	if (!misc.load()) {
 		return false;
 	}
-
 	return true;
 }

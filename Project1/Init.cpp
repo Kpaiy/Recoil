@@ -16,7 +16,7 @@ bool Recoil::Init() {
 	TILE_SIZE = 50;
 	CHUNK_WIDTH = 25;
 
-	GRAVITY = 9.8;
+	GRAVITY = 2;
 
 	//set a seed for random generation
 	srand(time(0));
@@ -37,7 +37,7 @@ bool Recoil::Init() {
 	//temporary things
 	missingSprite.setTexture(textures.misc.missing);
 	vector<sf::Texture> tempVec;
-	tempVec.push_back(textures.misc.missing);
+	tempVec.push_back(textures.player.idle);
 	tempAnimations.push_back(tempVec);
 	vector<Weapon> tempWeaps;
 
@@ -61,13 +61,19 @@ bool Recoil::Init() {
 	}
 
 	//set up the game camera
-	//NOTE: the size and centre of the camera have been drastically increased in order to see the random level generation
-	camera.setSize(6 * RES_WIDTH, 6 * RES_HEIGHT);
-	camera.setCenter(3 * RES_WIDTH, 3 * RES_HEIGHT);
+	camPos = player.center();
+	camDamp = 0.1;
+	camera.setSize(RES_WIDTH, RES_HEIGHT);
+	camera.setCenter(camPos);
 	window.setView(camera);	
+	offset = sf::Vector2f(0,0);
+
 
 	menuState = 0;
 	playing = false;
+
+	//disable os repeating keystrokes when a key is held down
+	window.setKeyRepeatEnabled(false);
 
 	//if no hiccups from the first bit, return true
 	return true;

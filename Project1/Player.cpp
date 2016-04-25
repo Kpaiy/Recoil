@@ -102,9 +102,9 @@ Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture>> &animations, v
 	this->score = score;
 
 	//player movement stats
-	walkAccel = 3;
-	walkSpeed = 5;
-	jumpVelocity = 2;
+	walkAccel = 2;
+	walkSpeed = 3;
+	jumpVelocity = 0.8;
 
 	doesClip = true;
 	usesGravity = true;

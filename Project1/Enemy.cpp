@@ -144,8 +144,22 @@ void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles)
 		isGrounded = false;
 	}
 
-	//if the player is grounded, calculate friction on x velocity
+	//if the character is grounded, calculate friction on x velocity
+	//FIX: something wrong with this line, can't figure it out
 	if (isGrounded) {
-		velocity.x -= velocity.x * friction * deltaTime;
+		//velocity.x -= velocity.x * friction * deltaTime;
 	}
+}
+
+//returns center of the character
+sf::Vector2f Character::center() {
+	//get bounding box
+	sf::FloatRect bounds = sprite.getGlobalBounds();
+
+	//find center of bounding box
+	sf::Vector2f center;
+	center.x = bounds.left + bounds.width / 2;
+	center.y = bounds.top + bounds.height / 2;
+
+	return center;
 }

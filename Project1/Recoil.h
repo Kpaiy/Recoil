@@ -40,6 +40,10 @@ private:
 
 	//camera
 	sf::View camera;
+	sf::Vector2f camPos;
+	float camDamp;			//dampening factor of the camera
+	sf::Vector2f offset;	//offset caused by screenshake
+	std::vector<sf::Vector2f> shakes;		//screenshakes, each element being a container for duration and magnitude
 
 	//current menu or game state
 	//0 - Main Menu, 1 - Game, 2 - Settings
@@ -91,6 +95,10 @@ public:
 	//run this when user quits game
 	void Close();
 
+	//tracks the player
+	void updateCamera(float deltaTime);
+	void screenShake(float time, int magnitude);
+	 
 	//!SETTINGS
 	int RES_WIDTH;		//resolution horizontally
 	int RES_HEIGHT;		//resolution vertically

@@ -23,6 +23,13 @@ public:
 	sf::Texture missing;
 };
 
+class Protag {
+public:
+	Protag();
+	bool load();
+
+	sf::Texture idle;
+};
 
 class Textures {
 public:
@@ -31,4 +38,5 @@ public:
 
 	Terrain terrain;
 	Misc misc;
+	Protag player;
 };
