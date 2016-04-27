@@ -103,7 +103,7 @@ Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture>> &animations, v
 
 	//player movement stats
 	walkAccel = 2;
-	walkSpeed = 3;
+	walkSpeed = 1;
 	jumpVelocity = 0.8;
 
 	doesClip = true;
@@ -126,10 +126,10 @@ Player::Player() {
 void Player::control(int moveX, bool jump, float deltaTime) {
 	//if the player is on the ground
 	if (isGrounded) {
-		//if the player is below the max walk speed
-		if (velocity.x < walkSpeed) {
-			//move the player horizontally according to moveX and deltaTime
-			velocity.x += walkAccel * deltaTime * moveX;
+		//if the player is not attempting to exceed the maximum walk speed
+		if (!(moveX * velocity.x > walkSpeed)) {
+			//move the player horizontally according to moveX and deltaTime, and the friction of the tile
+			velocity.x += walkAccel * deltaTime * moveX * friction;
 		}
 
 		//if the player jumped

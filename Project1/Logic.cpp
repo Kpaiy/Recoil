@@ -14,22 +14,45 @@ void Recoil::Logic() {
 	//taken as seconds so multiplication is simple
 	deltaTime = clock.restart().asSeconds();
 
+	//check for particular held keys
+	int moveX = 0;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+		moveX -= 1;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+		moveX += 1;
+	}
+
+	//process player control
+	player.control(moveX, jump, deltaTime);
+
 	//move the player
 	player.move(GRAVITY, deltaTime, tiles);
 
 	//update the camera
 	updateCamera(deltaTime);
 
+	//reset input trackers
+	jump = false;
+
 }
 
 //incomplete function
 void Recoil::updateCamera(float deltaTime) {
-	//find the distance between the camera and the center of the player
-	sf::Vector2f distance = player.center() - camPos;
+	camCounter += deltaTime;
+	
+	//if not exceeding max dampen cycles per second
+	if (camCounter >= 1 / dampRate) {
+		//find the distance between the camera and the center of the player
+		sf::Vector2f distance = player.center() - camPos;
 
-	//move the camPos
-	camPos.x += distance.x * camDamp;
-	camPos.y += distance.y * camDamp;
+		//move the camPos
+		camPos.x += distance.x * camDamp;
+		camPos.y += distance.y * camDamp;
+
+		//reset counter
+		camCounter = 0;
+	}
 
 	//reset offset
 	offset.x = 0;

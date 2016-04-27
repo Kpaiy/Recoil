@@ -42,6 +42,8 @@ private:
 	sf::View camera;
 	sf::Vector2f camPos;
 	float camDamp;			//dampening factor of the camera
+	int dampRate;			//max amount of times to dampen per second
+	float camCounter;
 	sf::Vector2f offset;	//offset caused by screenshake
 	std::vector<sf::Vector2f> shakes;		//screenshakes, each element being a container for duration and magnitude
 
@@ -51,6 +53,9 @@ private:
 
 	//whether the player is currently in a game
 	bool playing;
+
+	//player control tracker
+	bool jump;
 
 	//textures
 	Textures textures;

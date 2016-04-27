@@ -40,12 +40,15 @@ bool Recoil::Init() {
 	tempVec.push_back(textures.player.idle);
 	tempAnimations.push_back(tempVec);
 	vector<Weapon> tempWeaps;
-
-	//temporary player constructor
-	player = Player(sf::Vector2f((float)500, (float)500), tempAnimations, tempWeaps);
 	
 	//generateTiles(map);
 	generateTiles(generateLevel(sf::Vector2i(3,3)));
+
+	//temporary player constructor
+	player = Player(sf::Vector2f((float)500, (float)500), tempAnimations, tempWeaps);
+	player.friction = 0;
+	//player movement trackers
+	jump = false;
 
 	//console shenanigans
 	cout << "Opening window..." << endl;
@@ -67,6 +70,8 @@ bool Recoil::Init() {
 	camera.setCenter(camPos);
 	window.setView(camera);	
 	offset = sf::Vector2f(0,0);
+	dampRate = 120;
+	camCounter = 0;
 
 
 	menuState = 0;

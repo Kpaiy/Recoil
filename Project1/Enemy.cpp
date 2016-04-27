@@ -101,9 +101,6 @@ void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles)
 		}
 	}
 
-	//friction value of terrain being collided with
-	float friction;
-
 	//move sprite by y velocity
 	sprite.move(0, velocity.y * deltaTime);
 	//if the character cannot clip through terrain
@@ -144,11 +141,6 @@ void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles)
 		isGrounded = false;
 	}
 
-	//if the character is grounded, calculate friction on x velocity
-	//FIX: something wrong with this line, can't figure it out
-	if (isGrounded) {
-		//velocity.x -= velocity.x * friction * deltaTime;
-	}
 }
 
 //returns center of the character

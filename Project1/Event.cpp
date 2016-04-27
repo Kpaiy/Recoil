@@ -11,10 +11,6 @@ utilised.
 using namespace std;
 
 void Recoil::Event(sf::Event event) {
-	//variables to keep track of movement
-	int moveX = 0;
-	bool jump = false;
-
 	//detect different types of events
 	switch(event.type) {
 	
@@ -43,14 +39,4 @@ void Recoil::Event(sf::Event event) {
 		break;
 	}
 
-	//check for particular held keys
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-		moveX -= 1;
-	}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-		moveX += 1;
-	}
-
-	//apply any movement
-	player.control(moveX, jump, deltaTime);
 }

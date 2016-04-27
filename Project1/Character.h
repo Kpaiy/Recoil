@@ -61,6 +61,9 @@ public:
 	int currentAnimation;
 	int currentFrame;
 
+	//friction value of tile the character is on
+	float friction;
+
 	//character sprite
 	sf::Sprite sprite;
 
