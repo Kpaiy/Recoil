@@ -29,6 +29,8 @@ public:
 	bool load();
 
 	sf::Texture idle;
+	sf::Texture fGun;
+	sf::Texture bGun;
 };
 
 class Textures {

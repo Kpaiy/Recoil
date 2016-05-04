@@ -12,7 +12,7 @@ using namespace std;
 
 //weapon constructor
 Weapon::Weapon(std::string weaponName, sf::Texture &weaponIcon, std::vector<std::vector<sf::Texture>> &frontAnimations, std::vector<std::vector<sf::Texture>> &backAnimations,
-	bool isAutomatic, std::string projectileType, int projectiles, float projectileVelocity, bool projectileGravity, float accuracy, float fireRate, float recoil,
+	sf::Vector2f pivotFront, sf::Vector2f pivotBack, bool isAutomatic, std::string projectileType, int projectiles, float projectileVelocity, bool projectileGravity, float accuracy, float fireRate, float recoil,
 	float splashDamage, float splashRange) {
 	
 	this->weaponName = weaponName;
@@ -31,6 +31,16 @@ Weapon::Weapon(std::string weaponName, sf::Texture &weaponIcon, std::vector<std:
 
 	this->splashDamage = splashDamage;
 	this->splashRange = splashRange;
+
+	//set up weapon sprites
+	this->pivotBack = pivotBack;
+	this->pivotFront = pivotFront;
+	currentAnimation = 0;
+	currentFrame = 0;
+	spriteFront.setTexture(animationsFront[currentAnimation][currentFrame]);
+	spriteBack.setTexture(animationsBack[currentAnimation][currentFrame]);
+	spriteFront.setOrigin(pivotFront);
+	spriteBack.setOrigin(pivotBack);
 }
 
 //empty function
@@ -91,6 +101,26 @@ void Weapon::nextFrame() {
 	}
 }
 
+void Weapon::aim(sf::Vector2f aimPos) {
+	//find the angle from the player to the aim position
+	sf::Vector2f weaponPos = spriteFront.getPosition();
+	float rotation = atan2(aimPos.y - weaponPos.y, aimPos.x - weaponPos.x) * 180/PI;
+
+	//set the weapon arms' rotation by the found angle
+	spriteFront.setRotation(rotation);
+	spriteBack.setRotation(rotation);
+	
+}
+
+void Weapon::move(sf::Vector2f shoulder) {
+	//http://en.sfml-dev.org/forums/index.php?topic=12604.0
+	//http://gamedev.stackexchange.com/questions/28050/how-do-i-get-the-coordinates-of-a-rotated-shape-in-sfml
+
+	//move the weapon sprites to the player position
+	spriteFront.setPosition(shoulder);
+	spriteBack.setPosition(shoulder);
+}
+
 Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture>> &animations, vector<Weapon> weapons, float health, int maxHealth, int score) {
 	//set console character name
 	charName = "Player";
@@ -100,6 +130,9 @@ Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture>> &animations, v
 	this->health = health;
 	this->maxHealth = maxHealth;
 	this->score = score;
+
+	//shoulders
+	shoulder = sf::Vector2f(15, 30);
 
 	//player movement stats
 	walkAccel = 2;
@@ -115,21 +148,49 @@ Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture>> &animations, v
 
 	//sprite creation
 	sprite.setTexture(animations[currentAnimation][currentFrame]);
+	//set the origin to the shoulder
+	sprite.setOrigin(shoulder);
 	//position the sprite
 	sprite.setPosition(spawnPos);
+
+	//get weapons
+	this->weapons = weapons;
+	//set the equipped weapon
+	equippedWeapon = 0;
 }
 
 Player::Player() {
 
 }
 
+//performs all required frame by frame functions
+void Player::update(float gravity, float deltaTime, std::vector<Tile> &terrainTiles, sf::Vector2f aimPos) {
+	//move the player
+	move(gravity, deltaTime, terrainTiles);
+	//move and aim the currently equipped weapon
+	weapons[equippedWeapon].move(sprite.getPosition());
+	weapons[equippedWeapon].aim(aimPos);
+}
+
+void Player::draw(sf::RenderWindow &window) {
+	//draw the back arm of the currently equipped weapon
+	window.draw(weapons[equippedWeapon].spriteBack);
+	//draw the player
+	window.draw(sprite);
+	//draw the front arm of the currently equipped weapon
+	window.draw(weapons[equippedWeapon].spriteFront);
+}
+
 void Player::control(int moveX, bool jump, float deltaTime) {
 	//if the player is on the ground
 	if (isGrounded) {
 		//if the player is not attempting to exceed the maximum walk speed
-		if (!(moveX * velocity.x > walkSpeed)) {
-			//move the player horizontally according to moveX and deltaTime, and the friction of the tile
+		if (!(moveX * velocity.x > walkSpeed) && moveX != 0) {
+			//move the player horizontally according to moveX and deltaTime
 			velocity.x += walkAccel * deltaTime * moveX * friction;
+		}
+		else {
+			velocity.x -= velocity.x * friction * deltaTime;
 		}
 
 		//if the player jumped

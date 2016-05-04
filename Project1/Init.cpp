@@ -39,7 +39,19 @@ bool Recoil::Init() {
 	vector<sf::Texture> tempVec;
 	tempVec.push_back(textures.player.idle);
 	tempAnimations.push_back(tempVec);
+	
 	vector<Weapon> tempWeaps;
+	
+	vector<sf::Texture> f;
+	f.push_back(textures.player.fGun);
+	vector<sf::Texture> b;
+	b.push_back(textures.player.bGun);
+	vector<vector<sf::Texture>> fGun;
+	fGun.push_back(f);
+	vector<vector<sf::Texture>> bGun;
+	bGun.push_back(b);
+
+	tempWeaps.push_back(Weapon("Dual Pistols", textures.player.idle, fGun, bGun));
 	
 	//generateTiles(map);
 	generateTiles(generateLevel(sf::Vector2i(3,3)));

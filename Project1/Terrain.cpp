@@ -2,6 +2,8 @@
 
 #include "Terrain.h"
 
+using namespace std;
+
 //Tile constructor
 Tile::Tile(sf::Texture& tileTexture, sf::Vector2f position, std::vector<Tile>& tilePointers, float friction) {
 	//assign friction value
@@ -12,7 +14,7 @@ Tile::Tile(sf::Texture& tileTexture, sf::Vector2f position, std::vector<Tile>& t
 	sprite.setTexture(tileTexture);
 	//position tile
 	sprite.setPosition(position);
-	//add pointer to self to a list of tile pointers
+	//add self to a list of tile pointers
 	tilePointers.push_back(*this);
 }
 

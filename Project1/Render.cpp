@@ -24,7 +24,7 @@ void Recoil::Render() {
 	}
 
 	//draw the player
-	window.draw(player.sprite);
+	player.draw(window);
 
 	//update the display
 	window.display();

@@ -26,8 +26,9 @@ void Recoil::Logic() {
 	//process player control
 	player.control(moveX, jump, deltaTime);
 
-	//move the player
-	player.move(GRAVITY, deltaTime, tiles);
+	//update the player
+	player.update(GRAVITY, deltaTime, tiles, window.mapPixelToCoords(sf::Mouse::getPosition(window), camera));
+	//player.move(GRAVITY, deltaTime, tiles);
 
 	//update the camera
 	updateCamera(deltaTime);

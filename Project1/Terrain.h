@@ -7,13 +7,14 @@ to game terrain blocks and level generation.
 
 #pragma once
 
+#include <iostream>
 #include <SFML\Graphics.hpp>
 
 //terrain will be block-based, using this class for each tile
 class Tile {
 public:
 	Tile();
-	Tile(sf::Texture& tileTexture, sf::Vector2f position, std::vector<Tile>& tilePointers, float friction = 3);
+	Tile(sf::Texture& tileTexture, sf::Vector2f position, std::vector<Tile>& tilePointers, float friction = 5);
 
 	//tile graphic
 	sf::Sprite sprite;

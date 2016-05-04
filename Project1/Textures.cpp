@@ -38,6 +38,12 @@ bool Protag::load() {
 	if (!TextureUtils::loadTexture("resources/graphics/tempPlayer.png", idle)) {
 		return false;
 	}
+	if (!TextureUtils::loadTexture("resources/graphics/frontWeapon.png", fGun)) {
+		return false;
+	}
+	if (!TextureUtils::loadTexture("resources/graphics/backWeapon.png", bGun)) {
+		return false;
+	}
 
 	return true;
 }
@@ -50,7 +56,7 @@ Textures::Textures() {
 //load each subtexture group
 //if something goes wrong, return false
 bool Textures::load() {
-	//attempt to load terrain textures
+	//attempt to load terrain textures 
 	if (!terrain.load()) {
 		//if something goes wrong, return false
 		return false;

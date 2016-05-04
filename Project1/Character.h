@@ -84,8 +84,8 @@ class Weapon {
 public:
 	//weapon constructor
 	Weapon(std::string weaponName, sf::Texture &weaponIcon, std::vector<std::vector<sf::Texture>> &frontAnimations, std::vector<std::vector<sf::Texture>> &backAnimations,
-		bool isAutomatic, std::string projectileType, int projectiles, float projectileVelocity, bool projectileGravity, float accuracy, float fireRate, float recoil,
-		float splashDamage = 0, float splashRange = 0);
+		sf::Vector2f pivotFront = sf::Vector2f(5, 5), sf::Vector2f pivotBack = sf::Vector2f(0,0), bool isAutomatic = true, std::string projectileType = "small", int projectiles = 1, 
+		float projectileVelocity = 15, bool projectileGravity = false, float accuracy = 0.1, float fireRate = 0.05, float recoil = 2, float splashDamage = 0, float splashRange = 0);
 	//fire weapon
 	void fire();
 
@@ -96,6 +96,12 @@ public:
 	bool setAnimation(int newSet, int newFrame = 0);
 	//cycles between frames
 	void nextFrame();
+
+	//aims the weapon
+	void aim(sf::Vector2f aimPos);
+
+	//moves the weapons to be on the player
+	void move(sf::Vector2f shoulder);
 
 	//sprite for front arm
 	sf::Sprite spriteFront;
@@ -112,6 +118,10 @@ public:
 	//current animation set index
 	int currentAnimation;
 	int currentFrame;
+
+	//pivot point of the arms
+	sf::Vector2f pivotFront;
+	sf::Vector2f pivotBack;
 
 	//weapon stats
 	bool isAutomatic;			//whether the player can hold down the button to fire or has to click repeatedly
@@ -137,6 +147,9 @@ public:
 	//player constructor
 	Player(sf::Vector2f spawnPos, std::vector<std::vector<sf::Texture>> &animations, std::vector<Weapon> weapons, float health = 100, int maxHealth = 100, int score = 0);
 
+	void update(float gravity, float deltaTime, std::vector<Tile> &terrainTiles, sf::Vector2f aimPos);
+	void draw(sf::RenderWindow &window);
+
 	//applies player input
 	void control(int moveX, bool jump, float deltaTime);
 
@@ -145,6 +158,8 @@ public:
 	float walkAccel;				//player acceleration when walking on the ground
 	float walkSpeed;				//max speed the player can reach while walking
 	float jumpVelocity;				//velocity generated when the player jumps
+
+	sf::Vector2f shoulder;		//location on the player where the weapon arms will pivot around
 
 	//weapons
 	std::vector<Weapon> weapons;	//list of weapons

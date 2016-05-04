@@ -24,3 +24,10 @@ public:
 
 	static float stringToFloat(std::string string);
 };
+
+//!MATH FUNCTIONS
+class MathUtils {
+public:
+	static sf::Vector2f normalize(sf::Vector2f vector);
+	static float findAngle(sf::Vector2f origin, sf::Vector2f target);
+};
