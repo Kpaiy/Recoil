@@ -84,7 +84,7 @@ class Weapon {
 public:
 	//weapon constructor
 	Weapon(std::string weaponName, sf::Texture &weaponIcon, std::vector<std::vector<sf::Texture>> &frontAnimations, std::vector<std::vector<sf::Texture>> &backAnimations,
-		sf::Vector2f pivotFront = sf::Vector2f(5, 5), sf::Vector2f pivotBack = sf::Vector2f(0,0), bool isAutomatic = true, std::string projectileType = "small", int projectiles = 1, 
+		sf::Vector2f pivotFront = sf::Vector2f(8, 8), sf::Vector2f pivotBack = sf::Vector2f(5,5), bool isAutomatic = true, std::string projectileType = "small", int projectiles = 1, 
 		float projectileVelocity = 15, bool projectileGravity = false, float accuracy = 0.1, float fireRate = 0.05, float recoil = 2, float splashDamage = 0, float splashRange = 0);
 	//fire weapon
 	void fire();
@@ -97,11 +97,8 @@ public:
 	//cycles between frames
 	void nextFrame();
 
-	//aims the weapon
-	void aim(sf::Vector2f aimPos);
-
-	//moves the weapons to be on the player
-	void move(sf::Vector2f shoulder);
+	//moves and aims the weapons
+	void move(sf::Vector2f shoulder, sf::Vector2f aimPos);
 
 	//sprite for front arm
 	sf::Sprite spriteFront;

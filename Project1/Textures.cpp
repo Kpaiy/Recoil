@@ -38,10 +38,10 @@ bool Protag::load() {
 	if (!TextureUtils::loadTexture("resources/graphics/tempPlayer.png", idle)) {
 		return false;
 	}
-	if (!TextureUtils::loadTexture("resources/graphics/frontWeapon.png", fGun)) {
+	if (!TextureUtils::loadTexture("resources/graphics/frontWeapon.png", bGun)) {
 		return false;
 	}
-	if (!TextureUtils::loadTexture("resources/graphics/backWeapon.png", bGun)) {
+	if (!TextureUtils::loadTexture("resources/graphics/backWeapon.png", fGun)) {
 		return false;
 	}
 

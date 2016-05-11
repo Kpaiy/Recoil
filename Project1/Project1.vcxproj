@@ -23,6 +23,7 @@
     <ClInclude Include="LevelChunks.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Recoil.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Utilities.h" />
@@ -45,8 +46,11 @@
     <ClCompile Include="TextureUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="resources\graphics\backWeapon.png" />
     <Image Include="resources\graphics\dirt.png" />
+    <Image Include="resources\graphics\frontWeapon.png" />
     <Image Include="resources\graphics\missingTexture.png" />
+    <Image Include="resources\graphics\tempPlayer.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="chunks.rcl" />

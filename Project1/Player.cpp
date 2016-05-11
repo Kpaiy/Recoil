@@ -101,24 +101,31 @@ void Weapon::nextFrame() {
 	}
 }
 
-void Weapon::aim(sf::Vector2f aimPos) {
+void Weapon::move(sf::Vector2f shoulder, sf::Vector2f aimPos) {
 	//find the angle from the player to the aim position
-	sf::Vector2f weaponPos = spriteFront.getPosition();
-	float rotation = atan2(aimPos.y - weaponPos.y, aimPos.x - weaponPos.x) * 180/PI;
+	float rotation = atan2(aimPos.y - shoulder.y, aimPos.x - shoulder.x) * 180 / PI;
 
-	//set the weapon arms' rotation by the found angle
-	spriteFront.setRotation(rotation);
-	spriteBack.setRotation(rotation);
-	
-}
+	cout << rotation << endl;
 
-void Weapon::move(sf::Vector2f shoulder) {
-	//http://en.sfml-dev.org/forums/index.php?topic=12604.0
-	//http://gamedev.stackexchange.com/questions/28050/how-do-i-get-the-coordinates-of-a-rotated-shape-in-sfml
+	//adjust the pivot point depending on whether the player is facing right or left
+	if (abs(rotation) <= 90) {
+		//if the player is looking left, use the default pivots
+		spriteFront.setOrigin(pivotFront);
+		spriteBack.setOrigin(pivotBack);
+	}
+	else {
+		//if the player is looking left, invert the y pivot
+		spriteFront.setOrigin(pivotFront.x, spriteFront.getLocalBounds().height - pivotFront.y);
+		spriteBack.setOrigin(pivotBack.x, spriteBack.getLocalBounds().height - pivotBack.y);
+	}
 
 	//move the weapon sprites to the player position
 	spriteFront.setPosition(shoulder);
 	spriteBack.setPosition(shoulder);
+
+	//set the weapon arms' rotation by the found angle
+	spriteFront.setRotation(rotation);
+	spriteBack.setRotation(rotation);
 }
 
 Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture>> &animations, vector<Weapon> weapons, float health, int maxHealth, int score) {
@@ -168,8 +175,7 @@ void Player::update(float gravity, float deltaTime, std::vector<Tile> &terrainTi
 	//move the player
 	move(gravity, deltaTime, terrainTiles);
 	//move and aim the currently equipped weapon
-	weapons[equippedWeapon].move(sprite.getPosition());
-	weapons[equippedWeapon].aim(aimPos);
+	weapons[equippedWeapon].move(sprite.getPosition(), aimPos);
 }
 
 void Player::draw(sf::RenderWindow &window) {

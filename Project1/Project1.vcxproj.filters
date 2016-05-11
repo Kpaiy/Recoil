@@ -51,6 +51,9 @@
     <ClInclude Include="Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Close.cpp">
@@ -104,6 +107,15 @@
       <Filter>Resource Files\Textures</Filter>
     </Image>
     <Image Include="resources\graphics\dirt.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="resources\graphics\frontWeapon.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="resources\graphics\backWeapon.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="resources\graphics\tempPlayer.png">
       <Filter>Resource Files\Textures</Filter>
     </Image>
   </ItemGroup>
