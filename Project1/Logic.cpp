@@ -26,9 +26,20 @@ void Recoil::Logic() {
 	//process player control
 	player.control(moveX, jump, deltaTime);
 
+	//if the weapon is automatic and the player is holding down the mouse
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && player.weapons[player.equippedWeapon].isAutomatic) {
+		player.fire(window.mapPixelToCoords(sf::Mouse::getPosition(window)), projectiles);
+	}
+
 	//update the player
 	player.update(GRAVITY, deltaTime, tiles, window.mapPixelToCoords(sf::Mouse::getPosition(window), camera));
-	//player.move(GRAVITY, deltaTime, tiles);
+	//update all projectiles
+	for (vector<Projectile>::iterator it = projectiles[0].begin(); it != projectiles[0].end(); ++it) {
+		it->move(deltaTime, GRAVITY);
+	}
+	for (vector<Projectile>::iterator it = projectiles[1].begin(); it != projectiles[1].end(); ++it) {
+		it->move(deltaTime, GRAVITY);
+	}
 
 	//update the camera
 	updateCamera(deltaTime);

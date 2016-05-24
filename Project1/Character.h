@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <vector>
 
 //SFML libraries
 #include <SFML\System.hpp>
@@ -29,16 +30,24 @@ polymorphism.
 //projectile template
 class Projectile {
 public:
-	float projectileVelocity;	//velocity of the projectile
-	bool projectileGravity;		//whether the projectile experiences gravity
-	float damage;				//damage inflicted per projectile
-	float recoil;				//velocity on player from each shot of weapon
-	float splashDamage;			//splash damage, if applicable
-	float splashRange;			//splash range, if applicable
+	//projectile constructor
+	Projectile(sf::Vector2f shoulder, int offset, float angle, float speed, float damage, sf::Texture* bulletTex, std::vector<std::vector<Projectile>> &projectiles, float accuracy, bool playerOwned, float splashDamage = 0, float splashRange = 0, bool gravity = false);
+
+	//move function
+	void move(float deltaTime, float gravity);
+
+	//projectile sprite
+	sf::Sprite sprite;
+	sf::Texture* bulletTex;
+
+	//weapon stats
+	sf::Vector2f velocity;				//velocity of the projectile
+	bool usesGravity;						//whether the projectile experiences gravity
+	float damage;						//damage inflicted per projectile
+	float splashDamage;					//splash damage, if applicable
+	float splashRange;					//splash range, if applicable
 
 	bool hurtsPlayer;			//whether the projectile can harm the player
-
-	sf::Sprite sprite;			//sprite for the projectile
 };
 
 //base character for enemies and player
@@ -83,11 +92,13 @@ public:
 class Weapon {
 public:
 	//weapon constructor
-	Weapon(std::string weaponName, sf::Texture &weaponIcon, std::vector<std::vector<sf::Texture>> &frontAnimations, std::vector<std::vector<sf::Texture>> &backAnimations,
-		sf::Vector2f pivotFront = sf::Vector2f(8, 8), sf::Vector2f pivotBack = sf::Vector2f(5,5), bool isAutomatic = true, std::string projectileType = "small", int projectiles = 1, 
-		float projectileVelocity = 15, bool projectileGravity = false, float accuracy = 0.1, float fireRate = 0.05, float recoil = 2, float splashDamage = 0, float splashRange = 0);
+	Weapon(std::string weaponName, sf::Texture &weaponIcon, sf::Texture* bulletTex, std::vector<std::vector<sf::Texture>> &frontAnimations, std::vector<std::vector<sf::Texture>> &backAnimations,
+		sf::Vector2f pivotFront = sf::Vector2f(8, 8), sf::Vector2f pivotBack = sf::Vector2f(5,5), bool isAutomatic = true, int projectiles = 1, float damage = 5,
+		float projectileVelocity = 1500, bool projectileGravity = false, float accuracy = 0.05, float fireRate = 0.05, float recoil = 2, float splashDamage = 0, float splashRange = 0);
 	//fire weapon
-	void fire();
+	void fire(sf::Vector2f aimPos, std::vector<std::vector<Projectile>> &projectiles);
+	//updates the weapon
+	void update(sf::Vector2f aimPos, sf::Vector2f shoulder, float deltaTime);
 
 	//weapon name
 	std::string weaponName;
@@ -122,12 +133,13 @@ public:
 
 	//weapon stats
 	bool isAutomatic;			//whether the player can hold down the button to fire or has to click repeatedly
-	std::string projectileType; //type of projectile to spawn
+	sf::Texture* bulletTex;		//texture for the bullet
 	int projectiles;			//amount of projectiles fired per shot
 	float projectileVelocity;	//velocity of the projectile
 	bool projectileGravity;		//whether the projectile experiences gravity
 	float accuracy;				//angle of deviation from aim point
 	float fireRate;				//minimum time between each shot, in seconds
+	float shotTimer;			//time since the last shot
 	float damage;				//damage inflicted per projectile
 	float recoil;				//velocity on player from each shot of weapon
 	float splashDamage;			//splash damage, if applicable
@@ -146,6 +158,7 @@ public:
 
 	void update(float gravity, float deltaTime, std::vector<Tile> &terrainTiles, sf::Vector2f aimPos);
 	void draw(sf::RenderWindow &window);
+	void fire(sf::Vector2f aimPos, std::vector<std::vector<Projectile>> &projectiles);
 
 	//applies player input
 	void control(int moveX, bool jump, float deltaTime);

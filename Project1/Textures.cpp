@@ -38,10 +38,22 @@ bool Protag::load() {
 	if (!TextureUtils::loadTexture("resources/graphics/tempPlayer.png", idle)) {
 		return false;
 	}
-	if (!TextureUtils::loadTexture("resources/graphics/frontWeapon.png", bGun)) {
+	if (!TextureUtils::loadTexture("resources/graphics/frontWeapon.png", fGun)) {
 		return false;
 	}
-	if (!TextureUtils::loadTexture("resources/graphics/backWeapon.png", fGun)) {
+	if (!TextureUtils::loadTexture("resources/graphics/backWeapon.png", bGun)) {
+		return false;
+	}
+
+	return true;
+}
+
+Projectiles::Projectiles() {
+
+}
+
+bool Projectiles::load() {
+	if (!TextureUtils::loadTexture("resources/graphics/bullet.png", pistol)) {
 		return false;
 	}
 
@@ -67,9 +79,14 @@ bool Textures::load() {
 		return false;
 	}
 
+	if (!projectiles.load()) {
+		return false;
+	}
+
 	//attempt to load miscellaneous textures
 	if (!misc.load()) {
 		return false;
 	}
+
 	return true;
 }

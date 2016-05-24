@@ -51,7 +51,7 @@ bool Recoil::Init() {
 	vector<vector<sf::Texture>> bGun;
 	bGun.push_back(b);
 
-	tempWeaps.push_back(Weapon("Dual Pistols", textures.player.idle, fGun, bGun));
+	tempWeaps.push_back(Weapon("Dual Pistols", textures.projectiles.pistol, &textures.projectiles.pistol, fGun, bGun));
 	
 	//generateTiles(map);
 	generateTiles(generateLevel(sf::Vector2i(3,3)));
@@ -61,6 +61,12 @@ bool Recoil::Init() {
 	player.friction = 0;
 	//player movement trackers
 	jump = false;
+	fire = false;
+
+	//setup projectile container
+	vector<Projectile> tempProjectiles;
+	projectiles.push_back(tempProjectiles);
+	projectiles.push_back(tempProjectiles);
 
 	//console shenanigans
 	cout << "Opening window..." << endl;

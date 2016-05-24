@@ -23,6 +23,14 @@ void Recoil::Render() {
 		window.draw(it->sprite);
 	}
 
+	//draw all projectiles
+	for (vector<Projectile>::iterator it = projectiles[0].begin(); it != projectiles[0].end(); ++it) {
+		window.draw(it->sprite);
+	}
+	for (vector<Projectile>::iterator it = projectiles[1].begin(); it != projectiles[1].end(); ++it) {
+		window.draw(it->sprite);
+	}
+
 	//draw the player
 	player.draw(window);
 

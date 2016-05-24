@@ -1,6 +1,8 @@
 #pragma once
 #include "Character.h"
 
+#define PI 3.14159265358975323846264338327950
+
 //Player.cpp
 
 /*
@@ -10,10 +12,52 @@ the player class.
 
 using namespace std;
 
+//projectile constructor
+Projectile::Projectile(sf::Vector2f shoulder, int offset, float angle, float speed, float damage, sf::Texture* bulletTex, std::vector<std::vector<Projectile>> &projectiles, float accuracy, bool playerOwned, float splashDamage, float splashRange, bool gravity) {
+	//calculate a new angle factoring in innacuracy
+	float activeAngle = angle + (-accuracy + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2 * accuracy))));
+	
+	//find the angle as a unit vector
+	velocity.y = sinf(activeAngle * PI / 180);
+	velocity.x = cosf(activeAngle * PI / 180);
+	//multiply the velocity by the speed
+	velocity.y *= speed;
+	velocity.x *= speed;
+
+	this->damage = damage;
+	this->splashDamage = splashDamage;
+	this->splashRange = splashRange;
+	usesGravity = gravity;
+
+	//sprite setup
+	sprite.setTexture(*bulletTex);
+	sprite.setOrigin(0, sprite.getLocalBounds().height / 2);
+	//move the sprite away from the shoulder according to angle and offset
+	sprite.setPosition(shoulder);
+	sprite.move(cosf(activeAngle * PI / 180) * offset, sinf(angle * PI / 180) * offset);
+	sprite.setRotation(activeAngle);
+
+	//add the projectile to a list of projectiles
+	projectiles[playerOwned].push_back(*this);
+}
+
+void Projectile::move(float deltaTime, float gravity) {
+	//if the projectile experiences gravity
+	if (usesGravity) {
+		//accelerate particle downwards according to gravity and deltaTime
+		velocity.y += gravity * deltaTime;
+	}
+
+	//move the projectile by its velocity multiplied by the delta time
+	sprite.move(velocity.x * deltaTime, velocity.y * deltaTime);
+}
+
 //weapon constructor
-Weapon::Weapon(std::string weaponName, sf::Texture &weaponIcon, std::vector<std::vector<sf::Texture>> &frontAnimations, std::vector<std::vector<sf::Texture>> &backAnimations,
-	sf::Vector2f pivotFront, sf::Vector2f pivotBack, bool isAutomatic, std::string projectileType, int projectiles, float projectileVelocity, bool projectileGravity, float accuracy, float fireRate, float recoil,
+Weapon::Weapon(std::string weaponName, sf::Texture &weaponIcon, sf::Texture* bulletTex, std::vector<std::vector<sf::Texture>> &frontAnimations, std::vector<std::vector<sf::Texture>> &backAnimations,
+	sf::Vector2f pivotFront, sf::Vector2f pivotBack, bool isAutomatic, int projectiles, float damage, float projectileVelocity, bool projectileGravity, float accuracy, float fireRate, float recoil,
 	float splashDamage, float splashRange) {
+
+	cout << projectileVelocity << endl;
 	
 	this->weaponName = weaponName;
 	this->weaponIcon.setTexture(weaponIcon);
@@ -21,8 +65,9 @@ Weapon::Weapon(std::string weaponName, sf::Texture &weaponIcon, std::vector<std:
 	animationsFront = frontAnimations;
 
 	this->isAutomatic = isAutomatic;
-	this->projectileType = projectileType;
+	this->bulletTex = bulletTex;
 	this->projectiles = projectiles;
+	this->damage = damage;
 	this->projectileVelocity = projectileVelocity;
 	this->projectileGravity = projectileGravity;
 	this->accuracy = accuracy;
@@ -44,8 +89,18 @@ Weapon::Weapon(std::string weaponName, sf::Texture &weaponIcon, std::vector<std:
 }
 
 //empty function
-void Weapon::fire() {
+void Weapon::fire(sf::Vector2f aimPos, std::vector<std::vector<Projectile>> &projectiles) {
+	//if the weapon cooldown has expired
+	if (shotTimer <= 0) {
+		//for each projectile this shot
+		for (int i = 0; i < this->projectiles; i++) {
+			//create the projectile
+			Projectile(spriteFront.getPosition(), spriteFront.getLocalBounds().width, spriteFront.getRotation(), projectileVelocity, damage, bulletTex, projectiles, accuracy, true);
+		}
 
+		//activate the weapon cooldown
+		shotTimer = fireRate;
+	}
 }
 
 //NOTE: these weapon functions work because the front and back arm will always have matching length animations and the same amount of sets
@@ -105,8 +160,6 @@ void Weapon::move(sf::Vector2f shoulder, sf::Vector2f aimPos) {
 	//find the angle from the player to the aim position
 	float rotation = atan2(aimPos.y - shoulder.y, aimPos.x - shoulder.x) * 180 / PI;
 
-	cout << rotation << endl;
-
 	//adjust the pivot point depending on whether the player is facing right or left
 	if (abs(rotation) <= 90) {
 		//if the player is looking left, use the default pivots
@@ -126,6 +179,16 @@ void Weapon::move(sf::Vector2f shoulder, sf::Vector2f aimPos) {
 	//set the weapon arms' rotation by the found angle
 	spriteFront.setRotation(rotation);
 	spriteBack.setRotation(rotation);
+}
+
+void Weapon::update(sf::Vector2f aimPos, sf::Vector2f shoulder, float deltaTime) {
+	//decrement the shot cooldown by the deltaTime if it is greater than zero
+	if (shotTimer > 0) {
+		shotTimer -= deltaTime;
+	}
+
+	//move the weapon arms
+	move(shoulder, aimPos);
 }
 
 Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture>> &animations, vector<Weapon> weapons, float health, int maxHealth, int score) {
@@ -174,8 +237,8 @@ Player::Player() {
 void Player::update(float gravity, float deltaTime, std::vector<Tile> &terrainTiles, sf::Vector2f aimPos) {
 	//move the player
 	move(gravity, deltaTime, terrainTiles);
-	//move and aim the currently equipped weapon
-	weapons[equippedWeapon].move(sprite.getPosition(), aimPos);
+	//update the currently equipped weapon
+	weapons[equippedWeapon].update(aimPos, sprite.getPosition(), deltaTime);
 }
 
 void Player::draw(sf::RenderWindow &window) {
@@ -207,4 +270,10 @@ void Player::control(int moveX, bool jump, float deltaTime) {
 			isGrounded = false;
 		}
 	}
+}
+
+//when the player fires a weapon
+void Player::fire(sf::Vector2f aimPos, std::vector<std::vector<Projectile>> &projectiles) {
+	//call the fire function for the equipped weapon
+	weapons[equippedWeapon].fire(aimPos, projectiles);
 }

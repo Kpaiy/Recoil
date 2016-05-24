@@ -33,6 +33,14 @@ public:
 	sf::Texture bGun;
 };
 
+class Projectiles {
+public:
+	Projectiles();
+	bool load();
+
+	sf::Texture pistol;
+};
+
 class Textures {
 public:
 	Textures();
@@ -41,4 +49,5 @@ public:
 	Terrain terrain;
 	Misc misc;
 	Protag player;
+	Projectiles projectiles;
 };

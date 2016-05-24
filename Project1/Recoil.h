@@ -56,6 +56,7 @@ private:
 
 	//player control tracker
 	bool jump;
+	bool fire;
 
 	//textures
 	Textures textures;
@@ -124,6 +125,9 @@ public:
 
 	//container for all terrain tile pointers
 	std::vector<Tile> tiles;
+
+	//projectile container, two segments, one for player-owned, one for enemy-owned, respectively
+	std::vector<std::vector<Projectile>> projectiles;
 
 	//player
 	Player player;
