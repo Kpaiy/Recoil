@@ -31,7 +31,7 @@ polymorphism.
 class Projectile {
 public:
 	//projectile constructor
-	Projectile(sf::Vector2f shoulder, int offset, float angle, float speed, float damage, sf::Texture* bulletTex, std::vector<std::vector<Projectile>> &projectiles, float accuracy, bool playerOwned, float splashDamage = 0, float splashRange = 0, bool gravity = false);
+	Projectile(sf::Vector2f shoulder, int offset, float angle, float speed, float damage, sf::Texture* bulletTex, std::vector<std::vector<Projectile>> &projectiles, bool playerOwned, float splashDamage = 0, float splashRange = 0, bool gravity = false);
 
 	//move function
 	void move(float deltaTime, float gravity);
@@ -94,9 +94,9 @@ public:
 	//weapon constructor
 	Weapon(std::string weaponName, sf::Texture &weaponIcon, sf::Texture* bulletTex, std::vector<std::vector<sf::Texture>> &frontAnimations, std::vector<std::vector<sf::Texture>> &backAnimations,
 		sf::Vector2f pivotFront = sf::Vector2f(8, 8), sf::Vector2f pivotBack = sf::Vector2f(5,5), bool isAutomatic = true, int projectiles = 1, float damage = 5,
-		float projectileVelocity = 1500, bool projectileGravity = false, float accuracy = 0.05, float fireRate = 0.05, float recoil = 2, float splashDamage = 0, float splashRange = 0);
+		float projectileVelocity = 1500, bool projectileGravity = false, float accuracy = 1, float fireRate = 0.05, float recoil = 0.25, float splashDamage = 0, float splashRange = 0);
 	//fire weapon
-	void fire(sf::Vector2f aimPos, std::vector<std::vector<Projectile>> &projectiles);
+	sf::Vector2f fire(sf::Vector2f aimPos, std::vector<std::vector<Projectile>> &projectiles);
 	//updates the weapon
 	void update(sf::Vector2f aimPos, sf::Vector2f shoulder, float deltaTime);
 

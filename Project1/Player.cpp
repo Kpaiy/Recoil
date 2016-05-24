@@ -13,13 +13,12 @@ the player class.
 using namespace std;
 
 //projectile constructor
-Projectile::Projectile(sf::Vector2f shoulder, int offset, float angle, float speed, float damage, sf::Texture* bulletTex, std::vector<std::vector<Projectile>> &projectiles, float accuracy, bool playerOwned, float splashDamage, float splashRange, bool gravity) {
+Projectile::Projectile(sf::Vector2f shoulder, int offset, float angle, float speed, float damage, sf::Texture* bulletTex, std::vector<std::vector<Projectile>> &projectiles, bool playerOwned, float splashDamage, float splashRange, bool gravity) {
 	//calculate a new angle factoring in innacuracy
-	float activeAngle = angle + (-accuracy + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2 * accuracy))));
 	
 	//find the angle as a unit vector
-	velocity.y = sinf(activeAngle * PI / 180);
-	velocity.x = cosf(activeAngle * PI / 180);
+	velocity.y = sinf(angle * PI / 180);
+	velocity.x = cosf(angle * PI / 180);
 	//multiply the velocity by the speed
 	velocity.y *= speed;
 	velocity.x *= speed;
@@ -34,8 +33,8 @@ Projectile::Projectile(sf::Vector2f shoulder, int offset, float angle, float spe
 	sprite.setOrigin(0, sprite.getLocalBounds().height / 2);
 	//move the sprite away from the shoulder according to angle and offset
 	sprite.setPosition(shoulder);
-	sprite.move(cosf(activeAngle * PI / 180) * offset, sinf(angle * PI / 180) * offset);
-	sprite.setRotation(activeAngle);
+	sprite.move(cosf(angle * PI / 180) * offset, sinf(angle * PI / 180) * offset);
+	sprite.setRotation(angle);
 
 	//add the projectile to a list of projectiles
 	projectiles[playerOwned].push_back(*this);
@@ -56,8 +55,6 @@ void Projectile::move(float deltaTime, float gravity) {
 Weapon::Weapon(std::string weaponName, sf::Texture &weaponIcon, sf::Texture* bulletTex, std::vector<std::vector<sf::Texture>> &frontAnimations, std::vector<std::vector<sf::Texture>> &backAnimations,
 	sf::Vector2f pivotFront, sf::Vector2f pivotBack, bool isAutomatic, int projectiles, float damage, float projectileVelocity, bool projectileGravity, float accuracy, float fireRate, float recoil,
 	float splashDamage, float splashRange) {
-
-	cout << projectileVelocity << endl;
 	
 	this->weaponName = weaponName;
 	this->weaponIcon.setTexture(weaponIcon);
@@ -89,18 +86,31 @@ Weapon::Weapon(std::string weaponName, sf::Texture &weaponIcon, sf::Texture* bul
 }
 
 //empty function
-void Weapon::fire(sf::Vector2f aimPos, std::vector<std::vector<Projectile>> &projectiles) {
+sf::Vector2f Weapon::fire(sf::Vector2f aimPos, std::vector<std::vector<Projectile>> &projectiles) {
+	//recoil variable
+	sf::Vector2f recoil;
+	recoil.x = 0;
+	recoil.y = 0;
+
 	//if the weapon cooldown has expired
 	if (shotTimer <= 0) {
 		//for each projectile this shot
 		for (int i = 0; i < this->projectiles; i++) {
+			//calculate accuracy deviation
+			float activeAngle = spriteFront.getRotation() + (-accuracy + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2 * accuracy))));
 			//create the projectile
-			Projectile(spriteFront.getPosition(), spriteFront.getLocalBounds().width, spriteFront.getRotation(), projectileVelocity, damage, bulletTex, projectiles, accuracy, true);
+			Projectile(spriteFront.getPosition(), spriteFront.getLocalBounds().width, activeAngle, projectileVelocity, damage, bulletTex, projectiles, accuracy, true);
+			//calculate recoil to the player
+			recoil.x -= cosf(activeAngle * PI / 180) * this->recoil;
+			recoil.y -= sinf(activeAngle * PI / 180) * this->recoil;
 		}
 
 		//activate the weapon cooldown
 		shotTimer = fireRate;
 	}
+
+	//return the recoil
+	return recoil;
 }
 
 //NOTE: these weapon functions work because the front and back arm will always have matching length animations and the same amount of sets
@@ -275,5 +285,9 @@ void Player::control(int moveX, bool jump, float deltaTime) {
 //when the player fires a weapon
 void Player::fire(sf::Vector2f aimPos, std::vector<std::vector<Projectile>> &projectiles) {
 	//call the fire function for the equipped weapon
-	weapons[equippedWeapon].fire(aimPos, projectiles);
+	sf::Vector2f recoil = weapons[equippedWeapon].fire(aimPos, projectiles);
+
+	//apply recoil
+	velocity.x += recoil.x;
+	velocity.y += recoil.y;
 }
