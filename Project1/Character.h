@@ -27,29 +27,6 @@ be able to accept all kinds of enemies due to
 polymorphism.
 */
 
-//projectile template
-class Projectile {
-public:
-	//projectile constructor
-	Projectile(sf::Vector2f shoulder, int offset, float angle, float speed, float damage, sf::Texture* bulletTex, std::vector<std::vector<Projectile>> &projectiles, bool playerOwned, float splashDamage = 0, float splashRange = 0, bool gravity = false);
-
-	//move function
-	void move(float deltaTime, float gravity);
-
-	//projectile sprite
-	sf::Sprite sprite;
-	sf::Texture* bulletTex;
-
-	//weapon stats
-	sf::Vector2f velocity;				//velocity of the projectile
-	bool usesGravity;						//whether the projectile experiences gravity
-	float damage;						//damage inflicted per projectile
-	float splashDamage;					//splash damage, if applicable
-	float splashRange;					//splash range, if applicable
-
-	bool hurtsPlayer;			//whether the projectile can harm the player
-};
-
 //base character for enemies and player
 class Character {
 public:
@@ -57,6 +34,9 @@ public:
 	bool setAnimation(int newSet, int newFrame = 0);
 	//cycles between frames
 	void nextFrame();
+
+	//deals damage to the character
+	void damage(float damage);
 
 	//moves the sprite depending on their velocity, and factors in gravity
 	void move(float gravity, float deltaTime, std::vector<Tile> &terrainTiles);
@@ -87,6 +67,33 @@ public:
 
 	bool usesGravity;		//whether an object is affected by gravity or not
 	sf::Vector2f velocity;	//current velocity of the character
+};
+
+//projectile template
+class Projectile {
+public:
+	//projectile constructor
+	Projectile(sf::Vector2f shoulder, int offset, float angle, float speed, float damage, sf::Texture* bulletTex, std::vector<std::vector<Projectile>> &projectiles, bool playerOwned, float splashDamage = 0, float splashRange = 0, bool gravity = false);
+
+	//move function
+	void move(float deltaTime, float gravity);
+
+	//collision functions
+	bool collide(Character character);
+	bool collide(Tile tile);
+
+	//projectile sprite
+	sf::Sprite sprite;
+	sf::Texture* bulletTex;
+
+	//weapon stats
+	sf::Vector2f velocity;				//velocity of the projectile
+	bool usesGravity;						//whether the projectile experiences gravity
+	float damage;						//damage inflicted per projectile
+	float splashDamage;					//splash damage, if applicable
+	float splashRange;					//splash range, if applicable
+
+	bool hurtsPlayer;			//whether the projectile can harm the player
 };
 
 class Weapon {

@@ -10,6 +10,60 @@ processes, running each frame.
 using namespace std;
 
 void Recoil::Logic() {
+	//update all projectiles
+	//for all enemy projectiles
+	for (vector<Projectile>::iterator it = projectiles[0].begin(); it != projectiles[0].end();) {
+		bool collided = false;
+		//move the projectile
+		it->move(deltaTime, GRAVITY);
+		//if the projectile collides with the player
+		if (it->collide(player)) {
+			//delete the projectile
+			it = projectiles[0].erase(it);
+			collided = true;
+		}
+		else {
+			//otherwise, iterate and check for terrain tiles
+			for (vector<Tile>::iterator tile = tiles.begin(); tile != tiles.end(); ++tile) {
+				//if the projectile collides with the tile
+				if (it->collide(*tile)) {
+					//delete the projectile
+					it = projectiles[0].erase(it);
+					collided = true;
+					//break out of the loop
+					break;
+				}
+			}
+		}
+		//if the projectile did not collide, go to the next projectile manually
+		if (!collided) {
+			++it;
+		}
+	}
+	//for all player projectiles
+	for (vector<Projectile>::iterator it = projectiles[1].begin(); it != projectiles[1].end();) {
+		bool collided = false;
+		//move the projectile
+		it->move(deltaTime, GRAVITY);
+		//otherwise, iterate and check for terrain tiles
+		for (vector<Tile>::iterator tile = tiles.begin(); tile != tiles.end(); ++tile) {
+			//if the projectile collides with the tile
+			if (it->collide(*tile)) {
+				//delete the projectile
+				it = projectiles[1].erase(it);
+				collided = true;
+				//break out of the loop
+				break;
+			}
+		}
+
+		//if the projectile doesn't collide with anything, check the next projectile
+		if (!collided) {
+			++it;
+		}
+	}
+
+
 	//get the time since the last frame, used to calculate velocity changes
 	//taken as seconds so multiplication is simple
 	deltaTime = clock.restart().asSeconds();
@@ -33,14 +87,6 @@ void Recoil::Logic() {
 
 	//update the player
 	player.update(GRAVITY, deltaTime, tiles, window.mapPixelToCoords(sf::Mouse::getPosition(window), camera));
-	//update all projectiles
-	for (vector<Projectile>::iterator it = projectiles[0].begin(); it != projectiles[0].end(); ++it) {
-		it->move(deltaTime, GRAVITY);
-	}
-	for (vector<Projectile>::iterator it = projectiles[1].begin(); it != projectiles[1].end(); ++it) {
-		it->move(deltaTime, GRAVITY);
-	}
-
 	//update the camera
 	updateCamera(deltaTime);
 

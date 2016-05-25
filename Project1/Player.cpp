@@ -26,6 +26,7 @@ Projectile::Projectile(sf::Vector2f shoulder, int offset, float angle, float spe
 	this->damage = damage;
 	this->splashDamage = splashDamage;
 	this->splashRange = splashRange;
+	hurtsPlayer = !playerOwned;
 	usesGravity = gravity;
 
 	//sprite setup
@@ -49,6 +50,30 @@ void Projectile::move(float deltaTime, float gravity) {
 
 	//move the projectile by its velocity multiplied by the delta time
 	sprite.move(velocity.x * deltaTime, velocity.y * deltaTime);
+}
+
+bool Projectile::collide(Character character) {
+	//if the projectile is colliding with the character
+	if (sprite.getGlobalBounds().intersects(character.sprite.getGlobalBounds())) {
+		//damage the character
+		character.damage(damage);
+		//return true
+		return true;
+	} else {
+		//otherwise, return false
+		return false;
+	}
+}
+
+bool Projectile::collide(Tile tile) {
+	//if the projectile is colliding with the terrain tile
+	if (sprite.getGlobalBounds().intersects(tile.sprite.getGlobalBounds())) {
+		//return true
+		return true;
+	} else {
+		//otherwise return false
+		return false;
+	}
 }
 
 //weapon constructor

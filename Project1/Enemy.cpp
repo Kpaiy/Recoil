@@ -143,6 +143,13 @@ void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles)
 
 }
 
+void Character::damage(float damage) {
+	health -= damage;
+	if (health < 0) {
+		health = 0;
+	}
+}
+
 //returns center of the character
 sf::Vector2f Character::center() {
 	//get bounding box

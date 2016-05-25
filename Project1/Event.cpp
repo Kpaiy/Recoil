@@ -33,6 +33,17 @@ void Recoil::Event(sf::Event event) {
 		default:
 			break;
 		}
+		break;
+
+	case sf::Event::MouseButtonPressed:
+		switch (event.mouseButton.button) {
+		case sf::Mouse::Left:
+			//if the currently equipped weapon is not automatic
+			if (!player.weapons[player.equippedWeapon].isAutomatic) {
+				//fire the weapon
+				player.fire(window.mapPixelToCoords(sf::Mouse::getPosition(window)), projectiles);
+			}
+		}
 
 	//if not one of the above, do nothing
 	default:
