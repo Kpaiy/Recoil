@@ -22,6 +22,8 @@ void Recoil::Logic() {
 		it->move(deltaTime, GRAVITY);
 		//if the projectile collides with the player
 		if (it->collide(player)) {
+			//damage the player
+			player.damage(it->damage);
 			//delete the projectile
 			it = projectiles[0].erase(it);
 			collided = true;
@@ -44,6 +46,7 @@ void Recoil::Logic() {
 			++it;
 		}
 	}
+
 	//for all player projectiles
 	for (vector<Projectile>::iterator it = projectiles[1].begin(); it != projectiles[1].end();) {
 		bool collided = false;
@@ -84,7 +87,7 @@ void Recoil::Logic() {
 
 	//update all enemies
 	for (vector<Enemy>::iterator it = enemies.begin(); it != enemies.end();) {
-		//update the projectile
+		//update the enemy
 		if (!it->update(deltaTime, player.sprite.getPosition(), projectiles, GRAVITY, tiles)) {
 			//if the enemy died, add its score value to the player
 			player.score += it->scoreValue;

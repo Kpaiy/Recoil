@@ -238,9 +238,9 @@ Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture*>> &animations, 
 	shoulder = sf::Vector2f(15, 30);
 
 	//player movement stats
-	walkAccel = 2;
-	walkSpeed = 1;
-	jumpVelocity = 0.8;
+	walkAccel = 4;
+	walkSpeed = 2;
+	jumpVelocity = 1.4;
 
 	doesClip = true;
 	usesGravity = true;

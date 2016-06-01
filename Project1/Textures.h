@@ -13,6 +13,7 @@ public:
 	bool load();
 
 	sf::Texture dirt;
+	sf::Texture backDrop;
 };
 
 class Misc {
@@ -61,6 +62,7 @@ public:
 	sf::Vector2f barContainer;
 	int containerY;
 	int barOffset;
+	int iconOffset;
 	int outlineWidth;
 
 	sf::Texture heart;

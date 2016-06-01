@@ -37,6 +37,8 @@ public:
 
 	//deals damage to the character, returns true if character is dead
 	bool damage(float damage);
+	//apply damage from hitting terrain
+	void impactDamage(float velocity);
 
 	//moves the sprite depending on their velocity, and factors in gravity
 	void move(float gravity, float deltaTime, std::vector<Tile> &terrainTiles);
@@ -101,7 +103,7 @@ public:
 	//weapon constructor
 	Weapon(std::string weaponName, sf::Texture &weaponIcon, sf::Texture* bulletTex, std::vector<std::vector<sf::Texture*>> &frontAnimations, std::vector<std::vector<sf::Texture*>> &backAnimations,
 		sf::Vector2f pivotFront = sf::Vector2f(8, 8), sf::Vector2f pivotBack = sf::Vector2f(5,5), bool isAutomatic = true, int projectiles = 1, float damage = 5,
-		float projectileVelocity = 1500, bool projectileGravity = false, float accuracy = 1, float fireRate = 0.05, float recoil = 0.25, float splashDamage = 0, float splashRange = 0);
+		float projectileVelocity = 1500, bool projectileGravity = false, float accuracy = 1, float fireRate = 0.0625, float recoil = 0.35, float splashDamage = 0, float splashRange = 0);
 	//fire weapon
 	sf::Vector2f fire(sf::Vector2f aimPos, std::vector<std::vector<Projectile>> &projectiles);
 	//updates the weapon

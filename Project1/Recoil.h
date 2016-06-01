@@ -111,6 +111,8 @@ public:
 	int RES_WIDTH;		//resolution horizontally
 	int RES_HEIGHT;		//resolution vertically
 	bool FULLSCREEN;
+	int FRAME_CAP;		//frame rate cap
+
 	int TILE_SIZE;		//size of each tile unit in pixels
 	int CHUNK_WIDTH;	//size of each terrain chunk in tiles
 
@@ -127,6 +129,8 @@ public:
 
 	//container for all terrain tile pointers
 	std::vector<Tile> tiles;
+	//backdrop sprite
+	sf::Sprite backDrop;
 
 	//projectile container, two segments, one for player-owned, one for enemy-owned, respectively
 	std::vector<std::vector<Projectile>> projectiles;

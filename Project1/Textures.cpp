@@ -12,6 +12,12 @@ bool Terrain::load() {
 	if (!TextureUtils::loadTexture("resources/graphics/dirt.png", dirt)) {
 		return false;
 	}
+
+	if (!TextureUtils::loadTexture("resources/graphics/backdrop.png", backDrop)) {
+		return false;
+	}
+	//have the backdrop tileable
+	backDrop.setRepeated(true);
 	
 	return true;
 }
@@ -77,28 +83,30 @@ Textures::Textures() {
 }
 
 UI::UI() {
-
-}
-
-bool UI::load() {
-	uiColor.r = 220;
-	uiColor.g = 220;
-	uiColor.b = 220;
+	uiColor.r = 180;
+	uiColor.g = 180;
+	uiColor.b = 180;
 
 	healthBar.r = 255;
 	healthBar.g = 0;
 	healthBar.b = 0;
 
-	uiBar.x = 400;
-	uiBar.y = 30;
+	uiBar.x = 330;
+	uiBar.y = 10;
 
-	barContainer.x = 500;
-	barContainer.y = 50;
+	barContainer.x = 400;
+	barContainer.y = 40;
 
-	containerY = 100;
-	barOffset = 75;
+	containerY = 50;
+	barOffset = 60;
+	iconOffset = 25;
 	outlineWidth = 3;
+}
 
+bool UI::load() {
+	if (!TextureUtils::loadTexture("resources/graphics/heart.png", heart)) {
+		return false;
+	}
 
 	//return true
 	return true;

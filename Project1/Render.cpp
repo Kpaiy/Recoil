@@ -14,6 +14,9 @@ void Recoil::Render() {
 
 	//clear the window
 	window.clear(sf::Color::White);
+
+	//draw the backdrop
+	window.draw(backDrop);
 	
 	//draw game objects to window
 	window.draw(missingSprite);
@@ -57,8 +60,15 @@ void Recoil::Render() {
 	window.draw(healthBar);
 	healthBar.setFillColor(textures.ui.healthBar);
 	healthBar.setOutlineThickness(0);
-	healthBar.scale(0, player.health / player.maxHealth);
+	healthBar.scale(player.health / player.maxHealth, 1);
 	window.draw(healthBar);
+
+	//heart icon
+	sf::Sprite heartIcon;
+	heartIcon.setTexture(textures.ui.heart);
+	heartIcon.setOrigin(heartIcon.getLocalBounds().width / 2, heartIcon.getLocalBounds().height / 2);
+	heartIcon.setPosition(textures.ui.iconOffset, textures.ui.containerY + textures.ui.barContainer.y / 2);
+	window.draw(heartIcon);
 
 	//switch back to the camera
 	window.setView(camera);

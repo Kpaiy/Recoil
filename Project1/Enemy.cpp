@@ -24,7 +24,7 @@ bool Character::setAnimation(int newSet, int newFrame) {
 
 			//update the sprite
 			sprite.setTexture(*animations[currentAnimation][currentFrame]);
-
+			
 			//return true
 			return true;
 		}
@@ -65,6 +65,8 @@ void Character::nextFrame() {
 
 //moves the sprite, factoring in gravity if applicable
 void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles) {
+	//remember old velocity
+	sf::Vector2f oldVel;
 	//if the character uses gravity
 	if(usesGravity) {
 		//accelerate the character using acceleration strength and how long they've been accelerated
@@ -94,6 +96,8 @@ void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles)
 					//move the player by the found distance
 					sprite.move(overlap, 0);
 				}
+				//calculate impact damage
+				impactDamage(abs(velocity.x));
 				//set the x velocity to zero
 				velocity.x = 0;
 
@@ -128,6 +132,8 @@ void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles)
 					//move the player by the found distance
 					sprite.move(0, overlap);
 				}
+				//calculate impact damage
+				impactDamage(abs(velocity.y));
 				//set the y velocity to zero
 				velocity.y = 0;
 				
@@ -141,6 +147,17 @@ void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles)
 		isGrounded = false;
 	}
 
+}
+
+void Character::impactDamage(float velocity) {
+	float minV = 5; //minimum velocity required to incur fall damage
+
+	//if the velocity is enough to cause impact damage
+	if (velocity >= minV) {
+		float result = 3 * pow(velocity - minV, 0.5) + 5;
+		//damage the player by the found result
+		damage(result);
+	}
 }
 
 bool Character::damage(float damage) {

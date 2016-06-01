@@ -16,7 +16,9 @@ bool Recoil::Init() {
 	TILE_SIZE = 50;
 	CHUNK_WIDTH = 25;
 
-	GRAVITY = 2;
+	FRAME_CAP = 120;
+
+	GRAVITY = 3;
 
 	//set a seed for random generation
 	srand(time(0));
@@ -54,8 +56,14 @@ bool Recoil::Init() {
 
 	tempWeaps.push_back(Weapon("Dual Pistols", textures.projectiles.pistol, &textures.projectiles.pistol, fGun, bGun));
 	
-	//generateTiles(map);
-	generateTiles(generateLevel(sf::Vector2i(3,3)));
+	//level setup
+	int chunkHorizontal = 3;		//count of horizontal chunks in the level to be generated
+	int chunkVertical = 3;			//count of vertical chunks
+	generateTiles(generateLevel(sf::Vector2i(chunkHorizontal, chunkVertical)));
+	//backdrop setup
+	backDrop.setTexture(textures.terrain.backDrop);
+	backDrop.setPosition(-RES_WIDTH, -RES_HEIGHT);
+	backDrop.setTextureRect(sf::IntRect(0, 0, chunkHorizontal * CHUNK_WIDTH * TILE_SIZE + 2 * RES_WIDTH, chunkVertical * CHUNK_WIDTH * TILE_SIZE + 2 * RES_HEIGHT));
 
 	//temporary player constructor
 	player = Player(sf::Vector2f((float)500, (float)500), tempAnimations, tempWeaps);
@@ -96,12 +104,13 @@ bool Recoil::Init() {
 	camera.setSize(RES_WIDTH, RES_HEIGHT);
 	camera.setCenter(camPos);
 	window.setView(camera);	
+	window.setFramerateLimit(FRAME_CAP);
 	offset = sf::Vector2f(0,0);
 	dampRate = 120;
 	camCounter = 0;
 
-	sf::Rect<float> hudRect(0, 0, RES_WIDTH, RES_HEIGHT);
-	sf::View hud(hudRect);
+	hud.setSize(RES_WIDTH, RES_HEIGHT);
+	hud.setCenter(RES_WIDTH / 2, RES_HEIGHT / 2);
 	
 
 	menuState = 0;
