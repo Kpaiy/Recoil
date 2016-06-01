@@ -36,19 +36,20 @@ bool Recoil::Init() {
 	//load sprites
 	//temporary things
 	missingSprite.setTexture(textures.misc.missing);
-	vector<sf::Texture> tempVec;
-	tempVec.push_back(textures.player.idle);
+	vector<sf::Texture*> tempVec;
+	tempVec.push_back(&textures.player.idle);
+	vector<vector<sf::Texture*>> tempAnimations;
 	tempAnimations.push_back(tempVec);
 	
 	vector<Weapon> tempWeaps;
 	
-	vector<sf::Texture> f;
-	f.push_back(textures.player.fGun);
-	vector<sf::Texture> b;
-	b.push_back(textures.player.bGun);
-	vector<vector<sf::Texture>> fGun;
+	vector<sf::Texture*> f;
+	f.push_back(&textures.player.fGun);
+	vector<sf::Texture*> b;
+	b.push_back(&textures.player.bGun);
+	vector<vector<sf::Texture*>> fGun;
 	fGun.push_back(f);
-	vector<vector<sf::Texture>> bGun;
+	vector<vector<sf::Texture*>> bGun;
 	bGun.push_back(b);
 
 	tempWeaps.push_back(Weapon("Dual Pistols", textures.projectiles.pistol, &textures.projectiles.pistol, fGun, bGun));
@@ -62,6 +63,14 @@ bool Recoil::Init() {
 	//player movement trackers
 	jump = false;
 	fire = false;
+
+	//temporary enemy test
+	vector<sf::Texture*> enemyTex;
+	enemyTex.push_back(&textures.enemies.wraith);
+	vector<vector<sf::Texture*>> enemyAnims;
+	enemyAnims.push_back(enemyTex);
+	
+	Enemy(sf::Vector2f((float)500, (float)2500), enemies, enemyAnims, &textures.projectiles.pistol);
 
 	//setup projectile container
 	vector<Projectile> tempProjectiles;
@@ -91,6 +100,9 @@ bool Recoil::Init() {
 	dampRate = 120;
 	camCounter = 0;
 
+	sf::Rect<float> hudRect(0, 0, RES_WIDTH, RES_HEIGHT);
+	sf::View hud(hudRect);
+	
 
 	menuState = 0;
 	playing = false;

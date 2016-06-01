@@ -14,7 +14,7 @@ void Recoil::Render() {
 
 	//clear the window
 	window.clear(sf::Color::White);
-
+	
 	//draw game objects to window
 	window.draw(missingSprite);
 
@@ -31,8 +31,37 @@ void Recoil::Render() {
 		window.draw(it->sprite);
 	}
 
+	//draw all enemies
+	for (vector<Enemy>::iterator it = enemies.begin(); it != enemies.end(); ++it) {
+		window.draw(it->sprite);
+	}
+
 	//draw the player
 	player.draw(window);
+
+	//switch to the HUD view to draw hud elements
+	window.setView(hud);
+
+	//health container element
+	sf::RectangleShape container(textures.ui.barContainer);
+	container.setFillColor(textures.ui.uiColor);
+	container.setPosition(0, textures.ui.containerY);
+	window.draw(container);
+
+	//health bar
+	sf::RectangleShape healthBar(textures.ui.uiBar);
+	healthBar.setFillColor(sf::Color::Transparent);
+	healthBar.setOutlineColor(sf::Color::Black);
+	healthBar.setOutlineThickness(textures.ui.outlineWidth);
+	healthBar.setPosition(textures.ui.barOffset, textures.ui.containerY + (textures.ui.barContainer.y - textures.ui.uiBar.y) / 2);
+	window.draw(healthBar);
+	healthBar.setFillColor(textures.ui.healthBar);
+	healthBar.setOutlineThickness(0);
+	healthBar.scale(0, player.health / player.maxHealth);
+	window.draw(healthBar);
+
+	//switch back to the camera
+	window.setView(camera);
 
 	//update the display
 	window.display();

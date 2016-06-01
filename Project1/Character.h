@@ -35,8 +35,8 @@ public:
 	//cycles between frames
 	void nextFrame();
 
-	//deals damage to the character
-	void damage(float damage);
+	//deals damage to the character, returns true if character is dead
+	bool damage(float damage);
 
 	//moves the sprite depending on their velocity, and factors in gravity
 	void move(float gravity, float deltaTime, std::vector<Tile> &terrainTiles);
@@ -45,7 +45,7 @@ public:
 	sf::Vector2f center();
 
 	//list of animations, which are lists of textures
-	std::vector<std::vector<sf::Texture>> animations;
+	std::vector<std::vector<sf::Texture*>> animations;
 	//current animation set index
 	int currentAnimation;
 	int currentFrame;
@@ -63,7 +63,7 @@ public:
 	int maxHealth;			//max health of a character
 
 	bool doesClip;			//whether the character can pass through terrain
-	bool isGrounded;		//whether the player is standing on the ground
+	bool isGrounded;		//whether the character is standing on the ground
 
 	bool usesGravity;		//whether an object is affected by gravity or not
 	sf::Vector2f velocity;	//current velocity of the character
@@ -99,7 +99,7 @@ public:
 class Weapon {
 public:
 	//weapon constructor
-	Weapon(std::string weaponName, sf::Texture &weaponIcon, sf::Texture* bulletTex, std::vector<std::vector<sf::Texture>> &frontAnimations, std::vector<std::vector<sf::Texture>> &backAnimations,
+	Weapon(std::string weaponName, sf::Texture &weaponIcon, sf::Texture* bulletTex, std::vector<std::vector<sf::Texture*>> &frontAnimations, std::vector<std::vector<sf::Texture*>> &backAnimations,
 		sf::Vector2f pivotFront = sf::Vector2f(8, 8), sf::Vector2f pivotBack = sf::Vector2f(5,5), bool isAutomatic = true, int projectiles = 1, float damage = 5,
 		float projectileVelocity = 1500, bool projectileGravity = false, float accuracy = 1, float fireRate = 0.05, float recoil = 0.25, float splashDamage = 0, float splashRange = 0);
 	//fire weapon
@@ -127,9 +127,9 @@ public:
 	sf::Sprite weaponIcon;
 
 	//list of animations for front arm
-	std::vector<std::vector<sf::Texture>> animationsFront;
+	std::vector<std::vector<sf::Texture*>> animationsFront;
 	//list of animations for back arm
-	std::vector<std::vector<sf::Texture>> animationsBack;
+	std::vector<std::vector<sf::Texture*>> animationsBack;
 	//current animation set index
 	int currentAnimation;
 	int currentFrame;
@@ -156,12 +156,13 @@ public:
 	bool hasWeapon;
 };
 
+//player class
 class Player : public Character {
 public:
 	//empty constructor
 	Player();
 	//player constructor
-	Player(sf::Vector2f spawnPos, std::vector<std::vector<sf::Texture>> &animations, std::vector<Weapon> weapons, float health = 100, int maxHealth = 100, int score = 0);
+	Player(sf::Vector2f spawnPos, std::vector<std::vector<sf::Texture*>> &animations, std::vector<Weapon> weapons, float health = 100, int maxHealth = 100, int score = 0);
 
 	void update(float gravity, float deltaTime, std::vector<Tile> &terrainTiles, sf::Vector2f aimPos);
 	void draw(sf::RenderWindow &window);
@@ -181,4 +182,40 @@ public:
 	//weapons
 	std::vector<Weapon> weapons;	//list of weapons
 	int equippedWeapon;				//index of the weapon the player is currently using
+};
+
+//enemy base class
+class Enemy : public Character {
+public:
+	//constructor
+	Enemy(sf::Vector2f spawnPos, std::vector<Enemy> &enemies, std::vector<std::vector<sf::Texture*>> animations, sf::Texture* bulletTex, float thinkTime = 3, float fireRate = 0.5, float damage = 5, float accuracy = 2, float projectileSpeed = 1500, int health = 100, bool usesGravity = false, bool doesClip = false);
+
+	//AI makes decisions on how the enemy will behave
+	void choice();
+	//function to enact enemy decisions
+	void control(float deltaTime, sf::Vector2f playerPos, std::vector<std::vector<Projectile>> &projectiles);
+	//update function, returns false when dead
+	bool update(float deltaTime, sf::Vector2f playerPos, std::vector<std::vector<Projectile>> &projectiles, float gravity, std::vector<Tile> &tiles);
+
+	//enemy behaviour variables
+	bool shooting;
+	bool moving;
+	float thinkSpeed;	//the interval between enemy choices
+	float thinkCounter;	//counter for thinking
+
+	float minDistance;	//the closest the enemy will advance towards the player
+	float speed;		//speed at which the enemy can move
+
+	//projectile stats
+	float fireRate;
+	float fireCounter;
+
+	float projectileDamage;
+	float accuracy;
+	float projectileSpeed;
+
+	sf::Texture* bulletTex;
+
+	//score value
+	int scoreValue;
 };

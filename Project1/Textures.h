@@ -41,6 +41,31 @@ public:
 	sf::Texture pistol;
 };
 
+class Enemies {
+public:
+	Enemies();
+	bool load();
+
+	sf::Texture wraith;
+};
+
+class UI {
+public:
+	UI();
+	bool load();
+
+	sf::Color uiColor;
+	sf::Color healthBar;
+	
+	sf::Vector2f uiBar;
+	sf::Vector2f barContainer;
+	int containerY;
+	int barOffset;
+	int outlineWidth;
+
+	sf::Texture heart;
+};
+
 class Textures {
 public:
 	Textures();
@@ -50,4 +75,6 @@ public:
 	Misc misc;
 	Protag player;
 	Projectiles projectiles;
+	Enemies enemies;
+	UI ui;
 };

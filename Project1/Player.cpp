@@ -1,8 +1,6 @@
 #pragma once
 #include "Character.h"
 
-#define PI 3.14159265358975323846264338327950
-
 //Player.cpp
 
 /*
@@ -77,7 +75,7 @@ bool Projectile::collide(Tile tile) {
 }
 
 //weapon constructor
-Weapon::Weapon(std::string weaponName, sf::Texture &weaponIcon, sf::Texture* bulletTex, std::vector<std::vector<sf::Texture>> &frontAnimations, std::vector<std::vector<sf::Texture>> &backAnimations,
+Weapon::Weapon(std::string weaponName, sf::Texture &weaponIcon, sf::Texture* bulletTex, std::vector<std::vector<sf::Texture*>> &frontAnimations, std::vector<std::vector<sf::Texture*>> &backAnimations,
 	sf::Vector2f pivotFront, sf::Vector2f pivotBack, bool isAutomatic, int projectiles, float damage, float projectileVelocity, bool projectileGravity, float accuracy, float fireRate, float recoil,
 	float splashDamage, float splashRange) {
 	
@@ -104,8 +102,8 @@ Weapon::Weapon(std::string weaponName, sf::Texture &weaponIcon, sf::Texture* bul
 	this->pivotFront = pivotFront;
 	currentAnimation = 0;
 	currentFrame = 0;
-	spriteFront.setTexture(animationsFront[currentAnimation][currentFrame]);
-	spriteBack.setTexture(animationsBack[currentAnimation][currentFrame]);
+	spriteFront.setTexture(*animationsFront[currentAnimation][currentFrame]);
+	spriteBack.setTexture(*animationsBack[currentAnimation][currentFrame]);
 	spriteFront.setOrigin(pivotFront);
 	spriteBack.setOrigin(pivotBack);
 }
@@ -149,8 +147,8 @@ bool Weapon::setAnimation(int newSet, int newFrame) {
 			currentFrame = newFrame;
 
 			//update the sprites
-			spriteFront.setTexture(animationsFront[currentAnimation][currentFrame]);
-			spriteBack.setTexture(animationsBack[currentAnimation][currentFrame]);
+			spriteFront.setTexture(*animationsFront[currentAnimation][currentFrame]);
+			spriteBack.setTexture(*animationsBack[currentAnimation][currentFrame]);
 
 			//return true
 			return true;
@@ -186,8 +184,8 @@ void Weapon::nextFrame() {
 		}
 
 		//update the sprites
-		spriteFront.setTexture(animationsFront[currentAnimation][currentFrame]);
-		spriteBack.setTexture(animationsBack[currentAnimation][currentFrame]);
+		spriteFront.setTexture(*animationsFront[currentAnimation][currentFrame]);
+		spriteBack.setTexture(*animationsBack[currentAnimation][currentFrame]);
 	}
 }
 
@@ -226,7 +224,7 @@ void Weapon::update(sf::Vector2f aimPos, sf::Vector2f shoulder, float deltaTime)
 	move(shoulder, aimPos);
 }
 
-Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture>> &animations, vector<Weapon> weapons, float health, int maxHealth, int score) {
+Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture*>> &animations, vector<Weapon> weapons, float health, int maxHealth, int score) {
 	//set console character name
 	charName = "Player";
 
@@ -252,7 +250,7 @@ Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture>> &animations, v
 	currentFrame = 0;
 
 	//sprite creation
-	sprite.setTexture(animations[currentAnimation][currentFrame]);
+	sprite.setTexture(*animations[currentAnimation][currentFrame]);
 	//set the origin to the shoulder
 	sprite.setOrigin(shoulder);
 	//position the sprite

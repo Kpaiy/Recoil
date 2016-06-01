@@ -10,6 +10,10 @@ processes, running each frame.
 using namespace std;
 
 void Recoil::Logic() {
+	//get the time since the last frame, used to calculate velocity changes
+	//taken as seconds so multiplication is simple
+	deltaTime = clock.restart().asSeconds();
+
 	//update all projectiles
 	//for all enemy projectiles
 	for (vector<Projectile>::iterator it = projectiles[0].begin(); it != projectiles[0].end();) {
@@ -45,15 +49,30 @@ void Recoil::Logic() {
 		bool collided = false;
 		//move the projectile
 		it->move(deltaTime, GRAVITY);
-		//otherwise, iterate and check for terrain tiles
-		for (vector<Tile>::iterator tile = tiles.begin(); tile != tiles.end(); ++tile) {
+		//check for collisions with enemies
+		for (vector<Enemy>::iterator enemy = enemies.begin(); enemy != enemies.end(); ++enemy) {
 			//if the projectile collides with the tile
-			if (it->collide(*tile)) {
+			if (it->collide(*enemy)) {
+				//damage the enemy
+				enemy->damage(it->damage);
 				//delete the projectile
 				it = projectiles[1].erase(it);
 				collided = true;
 				//break out of the loop
 				break;
+			}
+		}
+		if (!collided) {
+			//otherwise, iterate and check for terrain tiles
+			for (vector<Tile>::iterator tile = tiles.begin(); tile != tiles.end(); ++tile) {
+				//if the projectile collides with the tile
+				if (it->collide(*tile)) {
+					//delete the projectile
+					it = projectiles[1].erase(it);
+					collided = true;
+					//break out of the loop
+					break;
+				}
 			}
 		}
 
@@ -63,10 +82,20 @@ void Recoil::Logic() {
 		}
 	}
 
-
-	//get the time since the last frame, used to calculate velocity changes
-	//taken as seconds so multiplication is simple
-	deltaTime = clock.restart().asSeconds();
+	//update all enemies
+	for (vector<Enemy>::iterator it = enemies.begin(); it != enemies.end();) {
+		//update the projectile
+		if (!it->update(deltaTime, player.sprite.getPosition(), projectiles, GRAVITY, tiles)) {
+			//if the enemy died, add its score value to the player
+			player.score += it->scoreValue;
+			//erase the enemy
+			it = enemies.erase(it);
+		}
+		else {
+			//otherwise, increment the iterator and continue
+			++it;
+		}
+	}
 
 	//check for particular held keys
 	int moveX = 0;
@@ -95,7 +124,6 @@ void Recoil::Logic() {
 
 }
 
-//incomplete function
 void Recoil::updateCamera(float deltaTime) {
 	camCounter += deltaTime;
 	

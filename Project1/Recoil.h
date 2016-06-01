@@ -21,6 +21,7 @@ elements of the game.
 #include <SFML\Window.hpp>
 #include <SFML\Graphics.hpp>
 #include <SFML\Audio.hpp>
+#include <SFML\Graphics\Color.hpp>
 
 //own code
 #include "Utilities.h"
@@ -40,6 +41,7 @@ private:
 
 	//camera
 	sf::View camera;
+	sf::View hud;			//hud view
 	sf::Vector2f camPos;
 	float camDamp;			//dampening factor of the camera
 	int dampRate;			//max amount of times to dampen per second
@@ -121,13 +123,15 @@ public:
 
 	//temporary things
 	sf::Sprite missingSprite;
-	std::vector<std::vector<sf::Texture>> tempAnimations;
+	//std::vector<std::vector<sf::Texture>> tempAnimations;
 
 	//container for all terrain tile pointers
 	std::vector<Tile> tiles;
 
 	//projectile container, two segments, one for player-owned, one for enemy-owned, respectively
 	std::vector<std::vector<Projectile>> projectiles;
+	//enemy container
+	std::vector<Enemy> enemies;
 
 	//player
 	Player player;

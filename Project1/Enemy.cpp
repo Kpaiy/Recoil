@@ -23,7 +23,7 @@ bool Character::setAnimation(int newSet, int newFrame) {
 			currentFrame = newFrame;
 
 			//update the sprite
-			sprite.setTexture(animations[currentAnimation][currentFrame]);
+			sprite.setTexture(*animations[currentAnimation][currentFrame]);
 
 			//return true
 			return true;
@@ -59,7 +59,7 @@ void Character::nextFrame() {
 		}
 
 		//update the sprite
-		sprite.setTexture(animations[currentAnimation][currentFrame]);
+		sprite.setTexture(*animations[currentAnimation][currentFrame]);
 	}
 }
 
@@ -143,10 +143,14 @@ void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles)
 
 }
 
-void Character::damage(float damage) {
+bool Character::damage(float damage) {
 	health -= damage;
-	if (health < 0) {
+	if (health <= 0) {
 		health = 0;
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 
@@ -161,4 +165,126 @@ sf::Vector2f Character::center() {
 	center.y = bounds.top + bounds.height / 2;
 
 	return center;
+}
+
+//enemy constructor
+Enemy::Enemy(sf::Vector2f spawnPos, std::vector<Enemy> &enemies, std::vector<std::vector<sf::Texture*>> animations, sf::Texture* bulletTex, float thinkTime, float fireRate, float damage, float accuracy, float projectileSpeed, int health, bool usesGravity, bool doesClip) {
+	//set the enemy's health
+	maxHealth = health;
+	this->health = health;
+
+	this->usesGravity = usesGravity;
+	this->doesClip = doesClip;
+
+	//animator setup
+	this->animations = animations;
+	currentAnimation = 0;
+	currentFrame = 0;
+
+	//AI setup
+	thinkCounter = 0;
+	thinkSpeed = thinkTime;
+
+	//enemy stats
+	speed = 20;
+	minDistance = 100;
+
+	//projectile stats
+	this->fireRate = fireRate;
+	fireCounter = 0;
+	
+	projectileDamage = damage;
+	this->accuracy = accuracy;
+	this->projectileSpeed = projectileSpeed;
+
+	this->bulletTex = bulletTex;
+	
+	//sprite setup
+	sprite.setTexture(*animations[currentAnimation][currentFrame]);
+	sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);		//set the origin to the center of the sprite
+	sprite.setPosition(spawnPos);
+
+	//score value
+	scoreValue = 100;
+
+	//append enemy to list of enemies
+	enemies.push_back(*this);
+}
+
+void Enemy::choice() {
+	//randomly determine whether the enemy will shoot and move
+	shooting = !!(rand() % 2);
+	moving = !!(rand() % 2);
+	
+	//set the enemy think counter to its think time
+	thinkCounter = thinkSpeed;
+}
+
+void Enemy::control(float deltaTime, sf::Vector2f playerPos, vector<vector<Projectile>> &projectiles) {
+	//find the angle of the player from the enemy, in radians
+	float playerAngle = atan2(playerPos.y - sprite.getPosition().y, playerPos.x - sprite.getPosition().x);
+
+	//if the enemy does not collide with terrain and is not affected by gravity
+	if (!(doesClip && usesGravity)) {
+		//if the enemy is moving
+		if (moving) {
+			//set the velocity to be towards the player
+			velocity.x = cosf(playerAngle) * speed;
+			velocity.y = sinf(playerAngle) * speed;
+
+			//if the enemy is advancing too close
+			if (sqrt(pow(playerPos.x - sprite.getPosition().x, 2) + pow(playerPos.y - sprite.getPosition().y, 2)) <= minDistance) {
+				//stop moving
+				moving = false;
+			}
+		}
+	}
+
+	//if the enemy is shooting and the weapon is able to be fired
+	if (shooting && fireCounter <= 0) {
+		//find playerAngle in degrees
+		playerAngle *= 180 / PI;
+		//add a random value from -accuracy to accuracy to the angle
+		playerAngle += (-accuracy + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2 * accuracy))));
+
+		//create the projectile
+		Projectile(sprite.getPosition(), 0, playerAngle, projectileSpeed, projectileDamage, bulletTex, projectiles, false);
+
+		//activate the weapon cooldown
+		fireCounter = fireRate;
+	}
+}
+
+bool Enemy::update(float deltaTime, sf::Vector2f playerPos, vector<vector<Projectile>>& projectiles, float gravity, vector<Tile> &tiles) {
+	//subtract deltaTime from thought counter if it is positive
+	if (thinkCounter > 0) {
+		thinkCounter -= deltaTime;
+	}
+	//subtract deltaTime from weapon counter if it is positive
+	if (fireCounter > 0) {
+		fireCounter -= deltaTime;
+	}
+
+	//if the enemy is able to think again
+	if (thinkCounter <= 0) {
+		//run choice function
+		choice();
+		//activate thought cooldown
+		thinkCounter = thinkSpeed;
+	}
+
+	//control the enemy
+	control(deltaTime, playerPos, projectiles);
+	//move the enemy
+	move(deltaTime, gravity, tiles);
+
+	//if the enemy is dead
+	if (health <= 0) {
+		//return false
+		return false;
+	}
+	else {
+		//otherwise, return true
+		return true;
+	}
 }

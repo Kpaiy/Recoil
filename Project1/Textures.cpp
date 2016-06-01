@@ -60,17 +60,69 @@ bool Projectiles::load() {
 	return true;
 }
 
+Enemies::Enemies() {
+
+}
+
+bool Enemies::load() {
+	if (!TextureUtils::loadTexture("resources/graphics/wraith.png", wraith)) {
+		return false;
+	}
+
+	return true;
+}
 
 Textures::Textures() {
 
 }
 
+UI::UI() {
+
+}
+
+bool UI::load() {
+	uiColor.r = 220;
+	uiColor.g = 220;
+	uiColor.b = 220;
+
+	healthBar.r = 255;
+	healthBar.g = 0;
+	healthBar.b = 0;
+
+	uiBar.x = 400;
+	uiBar.y = 30;
+
+	barContainer.x = 500;
+	barContainer.y = 50;
+
+	containerY = 100;
+	barOffset = 75;
+	outlineWidth = 3;
+
+
+	//return true
+	return true;
+}
+
 //load each subtexture group
 //if something goes wrong, return false
 bool Textures::load() {
+	//attempt to load miscellaneous textures
+	if (!misc.load()) {
+		return false;
+	}
+
 	//attempt to load terrain textures 
 	if (!terrain.load()) {
 		//if something goes wrong, return false
+		return false;
+	}
+
+	if (!projectiles.load()) {
+		return false;
+	}
+
+	if (!enemies.load()) {
 		return false;
 	}
 
@@ -79,14 +131,10 @@ bool Textures::load() {
 		return false;
 	}
 
-	if (!projectiles.load()) {
+	if (!ui.load()) {
 		return false;
 	}
 
-	//attempt to load miscellaneous textures
-	if (!misc.load()) {
-		return false;
-	}
 
 	return true;
 }
