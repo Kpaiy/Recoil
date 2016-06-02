@@ -16,11 +16,16 @@ bool Recoil::generateTiles(vector<vector<char>> map) {
 		for (int x = 0; x < map[y].size(); ++x) {
 			//check for characters representing tiles
 			switch (map[y][x]) {
-			//if a dirt tile
+			//if a solid dirt tile
 			case 'd':
 				//create a dirt tile
 				//multiply list index by TILE_SIZE to obtain coordinates
 				Tile(textures.terrain.dirt, sf::Vector2f((float)x * TILE_SIZE, (float)y * TILE_SIZE), tiles);
+				break;
+			//if a non-solid dirt tile
+			case 'D':
+				//create the tile
+				Tile(textures.terrain.dirt, sf::Vector2f((float)x * TILE_SIZE, (float)y * TILE_SIZE), decor);
 				break;
 			default:
 				//if none of the above characters, do nothing
@@ -38,27 +43,7 @@ This function takes in two numbers, the width and height of the level
 in chunks. This function then stitches together the appropriate amount
 and types of chunks together to fit the dimensions, creating a level.
 */
-vector<vector<char>> Recoil::generateLevel(sf::Vector2i dimensions) {
-	/*
-	//some driver code
-	//will obviously be replaced with actual level generation
-	char map0[5] = { 'd','d','d','d','d' };
-	char map1[5] = { 'd',' ',' ',' ','d' };
-	char map2[5] = { 'd',' ','d',' ','d' };
-	vector<char> vmap0;
-	vector<char> vmap1;
-	vector<char> vmap2;
-	vmap0.assign(map0, map0 + 5);
-	vmap1.assign(map1, map1 + 5);
-	vmap2.assign(map2, map2 + 5);
-	vector<vector<char>> map;
-	map.push_back(vmap0);
-	map.push_back(vmap1);
-	map.push_back(vmap2);
-	map.push_back(vmap1);
-	map.push_back(vmap0);
-	*/
-	
+vector<vector<char>> Recoil::generateMap(sf::Vector2i dimensions) {	
 	//a temporary chunk used for stitching purposes
 	vector<vector<char>> tempChunk;
 	//the output level
@@ -144,4 +129,27 @@ vector<vector<char>> Recoil::randChunk(vector<vector<vector<char>>> chunkType) {
 	int random = rand() % chunkType.size();
 	//return the chunk with the corresponding index in the chunk container
 	return chunkType[random];
+}
+
+void Recoil::generateEnemies(sf::Vector2i dimensions, int enemies) {
+	vector<sf::Texture*> enemyTex;
+	enemyTex.push_back(&textures.enemies.wraith);
+	vector<vector<sf::Texture*>> enemyAnims;
+	enemyAnims.push_back(enemyTex);
+	
+	//for the amount of times specified by enemies
+	for (int i = 0; i < enemies; ++i) {
+		//randomly generate a spawnPos that lies within the map
+		sf::Vector2f spawnPos;
+		spawnPos.x = rand() % (dimensions.x * TILE_SIZE * CHUNK_WIDTH);
+		spawnPos.y = rand() % (dimensions.y * TILE_SIZE * CHUNK_WIDTH);
+
+		//create an enemy at this location
+		Enemy(spawnPos, this->enemies, enemyAnims, &textures.projectiles.pistol);
+	}
+}
+
+void Recoil::generateLevel(sf::Vector2i dimensions, int enemies) {
+	generateTiles(generateMap(dimensions));
+	generateEnemies(dimensions, enemies);
 }

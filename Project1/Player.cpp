@@ -50,11 +50,11 @@ void Projectile::move(float deltaTime, float gravity) {
 	sprite.move(velocity.x * deltaTime, velocity.y * deltaTime);
 }
 
-bool Projectile::collide(Character character) {
+bool Projectile::collide(Character &character, vector<sf::Vector2f> &shakes) {
 	//if the projectile is colliding with the character
 	if (sprite.getGlobalBounds().intersects(character.sprite.getGlobalBounds())) {
 		//damage the character
-		character.damage(damage);
+		character.damage(damage, shakes);
 		//return true
 		return true;
 	} else {
@@ -63,7 +63,7 @@ bool Projectile::collide(Character character) {
 	}
 }
 
-bool Projectile::collide(Tile tile) {
+bool Projectile::collide(Tile &tile) {
 	//if the projectile is colliding with the terrain tile
 	if (sprite.getGlobalBounds().intersects(tile.sprite.getGlobalBounds())) {
 		//return true
@@ -238,9 +238,9 @@ Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture*>> &animations, 
 	shoulder = sf::Vector2f(15, 30);
 
 	//player movement stats
-	walkAccel = 4;
-	walkSpeed = 2;
-	jumpVelocity = 1.4;
+	walkAccel = 5;
+	walkSpeed = 2.5;
+	jumpVelocity = 1.8;
 
 	doesClip = true;
 	usesGravity = true;
@@ -267,9 +267,9 @@ Player::Player() {
 }
 
 //performs all required frame by frame functions
-void Player::update(float gravity, float deltaTime, std::vector<Tile> &terrainTiles, sf::Vector2f aimPos) {
+void Player::update(float gravity, float deltaTime, std::vector<Tile> &terrainTiles, sf::Vector2f aimPos, vector<sf::Vector2f> &shakes, float PROJECTILE_RANGE, int RES_WIDTH, int RES_HEIGHT) {
 	//move the player
-	move(gravity, deltaTime, terrainTiles);
+	move(gravity, deltaTime, terrainTiles, shakes, PROJECTILE_RANGE, RES_WIDTH, RES_HEIGHT);
 	//update the currently equipped weapon
 	weapons[equippedWeapon].update(aimPos, sprite.getPosition(), deltaTime);
 }
@@ -313,4 +313,28 @@ void Player::fire(sf::Vector2f aimPos, std::vector<std::vector<Projectile>> &pro
 	//apply recoil
 	velocity.x += recoil.x;
 	velocity.y += recoil.y;
+}
+
+bool Player::damage(float damage, vector<sf::Vector2f> &shakes) {
+	//apply screen shake with magnitude relative to damage
+	float shakeFactor = 5;
+
+	//append shake command to list of shakes
+	sf::Vector2f shake;
+	//set duration and magnitude
+	shake.x = 0.1;
+	shake.y = damage * shakeFactor;
+
+	//append to list of shakes
+	shakes.push_back(shake);
+
+	health -= damage;
+	if (health <= 0) {
+		health = 0;
+		return true;
+	}
+	else {
+		return false;
+	}
+	
 }

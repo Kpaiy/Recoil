@@ -16,9 +16,12 @@ bool Recoil::Init() {
 	TILE_SIZE = 50;
 	CHUNK_WIDTH = 25;
 
-	FRAME_CAP = 120;
+	FRAME_CAP = 75;
 
-	GRAVITY = 3;
+	GRAVITY = 4.2;
+
+	CONSIDER_RANGE = 1.2;
+	PROJECTILE_RANGE = 0.4;
 
 	//set a seed for random generation
 	srand(time(0));
@@ -59,7 +62,7 @@ bool Recoil::Init() {
 	//level setup
 	int chunkHorizontal = 3;		//count of horizontal chunks in the level to be generated
 	int chunkVertical = 3;			//count of vertical chunks
-	generateTiles(generateLevel(sf::Vector2i(chunkHorizontal, chunkVertical)));
+	generateLevel(sf::Vector2i(3, 3), 10);
 	//backdrop setup
 	backDrop.setTexture(textures.terrain.backDrop);
 	backDrop.setPosition(-RES_WIDTH, -RES_HEIGHT);
@@ -105,8 +108,9 @@ bool Recoil::Init() {
 	camera.setCenter(camPos);
 	window.setView(camera);	
 	window.setFramerateLimit(FRAME_CAP);
+	window.setVerticalSyncEnabled(true);	//enable v-sync to prevent screen tearing
 	offset = sf::Vector2f(0,0);
-	dampRate = 120;
+	dampRate = 75;
 	camCounter = 0;
 
 	hud.setSize(RES_WIDTH, RES_HEIGHT);

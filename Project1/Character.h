@@ -36,12 +36,12 @@ public:
 	void nextFrame();
 
 	//deals damage to the character, returns true if character is dead
-	bool damage(float damage);
+	virtual bool damage(float damage, std::vector<sf::Vector2f> &shakes);
 	//apply damage from hitting terrain
-	void impactDamage(float velocity);
+	void impactDamage(float velocity, std::vector<sf::Vector2f> &shakes);
 
 	//moves the sprite depending on their velocity, and factors in gravity
-	void move(float gravity, float deltaTime, std::vector<Tile> &terrainTiles);
+	void move(float gravity, float deltaTime, std::vector<Tile> &terrainTiles, std::vector<sf::Vector2f> &shakes, float PROJECTILE_RANGE, int RES_WIDTH, int RES_HEIGHT);
 
 	//finds the center of the character
 	sf::Vector2f center();
@@ -81,8 +81,8 @@ public:
 	void move(float deltaTime, float gravity);
 
 	//collision functions
-	bool collide(Character character);
-	bool collide(Tile tile);
+	bool collide(Character &character, std::vector<sf::Vector2f> &shakes);
+	bool collide(Tile &tile);
 
 	//projectile sprite
 	sf::Sprite sprite;
@@ -103,7 +103,7 @@ public:
 	//weapon constructor
 	Weapon(std::string weaponName, sf::Texture &weaponIcon, sf::Texture* bulletTex, std::vector<std::vector<sf::Texture*>> &frontAnimations, std::vector<std::vector<sf::Texture*>> &backAnimations,
 		sf::Vector2f pivotFront = sf::Vector2f(8, 8), sf::Vector2f pivotBack = sf::Vector2f(5,5), bool isAutomatic = true, int projectiles = 1, float damage = 5,
-		float projectileVelocity = 1500, bool projectileGravity = false, float accuracy = 1, float fireRate = 0.0625, float recoil = 0.35, float splashDamage = 0, float splashRange = 0);
+		float projectileVelocity = 1600, bool projectileGravity = false, float accuracy = 1, float fireRate = 0.0625, float recoil = 0.5, float splashDamage = 0, float splashRange = 0);
 	//fire weapon
 	sf::Vector2f fire(sf::Vector2f aimPos, std::vector<std::vector<Projectile>> &projectiles);
 	//updates the weapon
@@ -166,7 +166,10 @@ public:
 	//player constructor
 	Player(sf::Vector2f spawnPos, std::vector<std::vector<sf::Texture*>> &animations, std::vector<Weapon> weapons, float health = 100, int maxHealth = 100, int score = 0);
 
-	void update(float gravity, float deltaTime, std::vector<Tile> &terrainTiles, sf::Vector2f aimPos);
+	//player-specific damage function
+	bool damage(float damage, std::vector<sf::Vector2f> &shakes);
+
+	void update(float gravity, float deltaTime, std::vector<Tile> &terrainTiles, sf::Vector2f aimPos, std::vector<sf::Vector2f> &shakes, float PROJECTILE_RANGE, int RES_WIDTH, int RES_HEIGHT);
 	void draw(sf::RenderWindow &window);
 	void fire(sf::Vector2f aimPos, std::vector<std::vector<Projectile>> &projectiles);
 
@@ -190,14 +193,14 @@ public:
 class Enemy : public Character {
 public:
 	//constructor
-	Enemy(sf::Vector2f spawnPos, std::vector<Enemy> &enemies, std::vector<std::vector<sf::Texture*>> animations, sf::Texture* bulletTex, float thinkTime = 3, float fireRate = 0.5, float damage = 5, float accuracy = 2, float projectileSpeed = 1500, int health = 100, bool usesGravity = false, bool doesClip = false);
+	Enemy(sf::Vector2f spawnPos, std::vector<Enemy> &enemies, std::vector<std::vector<sf::Texture*>> animations, sf::Texture* bulletTex, float thinkTime = 3, float fireRate = 0.75, float damage = 1.5, float accuracy = 5, float projectileSpeed = 850, int health = 50, bool usesGravity = false, bool doesClip = false);
 
 	//AI makes decisions on how the enemy will behave
 	void choice();
 	//function to enact enemy decisions
 	void control(float deltaTime, sf::Vector2f playerPos, std::vector<std::vector<Projectile>> &projectiles);
 	//update function, returns false when dead
-	bool update(float deltaTime, sf::Vector2f playerPos, std::vector<std::vector<Projectile>> &projectiles, float gravity, std::vector<Tile> &tiles);
+	bool update(float deltaTime, sf::Vector2f playerPos, std::vector<std::vector<Projectile>> &projectiles, float gravity, std::vector<Tile> &tiles, std::vector<sf::Vector2f> &shakes, float PROJECTILE_RANGE, int RES_WIDTH, int RES_HEIGHT);
 
 	//enemy behaviour variables
 	bool shooting;

@@ -83,18 +83,20 @@ Textures::Textures() {
 }
 
 UI::UI() {
-	uiColor.r = 180;
-	uiColor.g = 180;
-	uiColor.b = 180;
+	uiColor.r = 0;
+	uiColor.g = 0;
+	uiColor.b = 0;
+	uiColor.a = 120;
 
 	healthBar.r = 255;
 	healthBar.g = 0;
 	healthBar.b = 0;
+	healthBar.a = 150;
 
 	uiBar.x = 330;
 	uiBar.y = 10;
 
-	barContainer.x = 400;
+	barContainer.x = 405;
 	barContainer.y = 40;
 
 	containerY = 50;

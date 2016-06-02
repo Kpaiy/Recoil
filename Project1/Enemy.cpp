@@ -64,7 +64,7 @@ void Character::nextFrame() {
 }
 
 //moves the sprite, factoring in gravity if applicable
-void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles) {
+void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles, vector<sf::Vector2f> &shakes, float PROJECTILE_RANGE, int RES_WIDTH, int RES_HEIGHT) {
 	//remember old velocity
 	sf::Vector2f oldVel;
 	//if the character uses gravity
@@ -81,26 +81,31 @@ void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles)
 		for (vector<Tile>::iterator it = terrainTiles.begin(); it != terrainTiles.end(); ++it) {
 			sf::FloatRect charRect = sprite.getGlobalBounds();
 			sf::FloatRect tileRect = it->sprite.getGlobalBounds();
-			//if the character collides with the tile
-			if (charRect.intersects(tileRect)) {
-				//if x velocity is positive
-				if (velocity.x >= 0) {
-					//find the distance from the right edge of character and left edge of tile
-					float overlap = tileRect.left - (charRect.left + charRect.width);
-					//move the player by the found distance
-					sprite.move(overlap, 0);
-				}
-				else {
-					//otherwise, find the distance between the right edge of tile and left edge of character
-					float overlap = tileRect.left + tileRect.width - charRect.left;
-					//move the player by the found distance
-					sprite.move(overlap, 0);
-				}
-				//calculate impact damage
-				impactDamage(abs(velocity.x));
-				//set the x velocity to zero
-				velocity.x = 0;
 
+			//if the projectile is near the character
+			sf::Vector2f distance = sprite.getPosition() - it->sprite.getPosition();
+			if (abs(distance.x) < PROJECTILE_RANGE * RES_WIDTH && abs(distance.y) < PROJECTILE_RANGE * RES_HEIGHT) {
+				//if the character collides with the tile
+				if (charRect.intersects(tileRect)) {
+					//if x velocity is positive
+					if (velocity.x >= 0) {
+						//find the distance from the right edge of character and left edge of tile
+						float overlap = tileRect.left - (charRect.left + charRect.width);
+						//move the player by the found distance
+						sprite.move(overlap, 0);
+					}
+					else {
+						//otherwise, find the distance between the right edge of tile and left edge of character
+						float overlap = tileRect.left + tileRect.width - charRect.left;
+						//move the player by the found distance
+						sprite.move(overlap, 0);
+					}
+					//calculate impact damage
+					impactDamage(abs(velocity.x), shakes);
+					//set the x velocity to zero
+					velocity.x = 0;
+
+				}
 			}
 		}
 	}
@@ -113,30 +118,35 @@ void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles)
 		for (vector<Tile>::iterator it = terrainTiles.begin(); it != terrainTiles.end(); ++it) {
 			sf::FloatRect charRect = sprite.getGlobalBounds();
 			sf::FloatRect tileRect = it->sprite.getGlobalBounds();
-			//if the character collides with the tile
-			if (charRect.intersects(tileRect)) {
-				//if y velocity is positive
-				if (velocity.y >= 0) {
-					//find the distance from the bottom edge of character and top edge of tile
-					float overlap = tileRect.top - (charRect.top + charRect.height);
-					//move the player by the found distance
-					sprite.move(0, overlap);
-					//save the friction value of the tile
-					friction = it->friction;
-					//set isGrounded to true
-					isGrounded = true;
+
+			//if the projectile is near the character
+			sf::Vector2f distance = sprite.getPosition() - it->sprite.getPosition();
+			if (abs(distance.x) < PROJECTILE_RANGE * RES_WIDTH && abs(distance.y) < PROJECTILE_RANGE * RES_HEIGHT) {
+				//if the character collides with the tile
+				if (charRect.intersects(tileRect)) {
+					//if y velocity is positive
+					if (velocity.y >= 0) {
+						//find the distance from the bottom edge of character and top edge of tile
+						float overlap = tileRect.top - (charRect.top + charRect.height);
+						//move the player by the found distance
+						sprite.move(0, overlap);
+						//save the friction value of the tile
+						friction = it->friction;
+						//set isGrounded to true
+						isGrounded = true;
+					}
+					else {
+						//otherwise, find the distance between the bottom edge of tile and top edge of character
+						float overlap = tileRect.top + tileRect.height - charRect.top;
+						//move the player by the found distance
+						sprite.move(0, overlap);
+					}
+					//calculate impact damage
+					impactDamage(abs(velocity.y), shakes);
+					//set the y velocity to zero
+					velocity.y = 0;
+
 				}
-				else {
-					//otherwise, find the distance between the bottom edge of tile and top edge of character
-					float overlap = tileRect.top + tileRect.height - charRect.top;
-					//move the player by the found distance
-					sprite.move(0, overlap);
-				}
-				//calculate impact damage
-				impactDamage(abs(velocity.y));
-				//set the y velocity to zero
-				velocity.y = 0;
-				
 			}
 		}
 	}
@@ -149,18 +159,18 @@ void Character::move(float deltaTime, float gravity, vector<Tile> &terrainTiles)
 
 }
 
-void Character::impactDamage(float velocity) {
-	float minV = 5; //minimum velocity required to incur fall damage
+void Character::impactDamage(float velocity, vector<sf::Vector2f> &shakes) {
+	float minV = 7.5; //minimum velocity required to incur fall damage
 
 	//if the velocity is enough to cause impact damage
 	if (velocity >= minV) {
-		float result = 3 * pow(velocity - minV, 0.5) + 5;
+		float result = 3.5 * pow(velocity - minV, 0.75) + 5;
 		//damage the player by the found result
-		damage(result);
+		damage(result, shakes);
 	}
 }
 
-bool Character::damage(float damage) {
+bool Character::damage(float damage, vector<sf::Vector2f> &shakes) {
 	health -= damage;
 	if (health <= 0) {
 		health = 0;
@@ -203,7 +213,7 @@ Enemy::Enemy(sf::Vector2f spawnPos, std::vector<Enemy> &enemies, std::vector<std
 	thinkSpeed = thinkTime;
 
 	//enemy stats
-	speed = 20;
+	speed = 65;
 	minDistance = 100;
 
 	//projectile stats
@@ -272,7 +282,7 @@ void Enemy::control(float deltaTime, sf::Vector2f playerPos, vector<vector<Proje
 	}
 }
 
-bool Enemy::update(float deltaTime, sf::Vector2f playerPos, vector<vector<Projectile>>& projectiles, float gravity, vector<Tile> &tiles) {
+bool Enemy::update(float deltaTime, sf::Vector2f playerPos, vector<vector<Projectile>>& projectiles, float gravity, vector<Tile> &tiles, vector<sf::Vector2f> &shakes, float PROJECTILE_RANGE, int RES_WIDTH, int RES_HEIGHT) {
 	//subtract deltaTime from thought counter if it is positive
 	if (thinkCounter > 0) {
 		thinkCounter -= deltaTime;
@@ -293,7 +303,7 @@ bool Enemy::update(float deltaTime, sf::Vector2f playerPos, vector<vector<Projec
 	//control the enemy
 	control(deltaTime, playerPos, projectiles);
 	//move the enemy
-	move(deltaTime, gravity, tiles);
+	move(deltaTime, gravity, tiles, shakes, PROJECTILE_RANGE, RES_WIDTH, RES_HEIGHT);
 
 	//if the enemy is dead
 	if (health <= 0) {

@@ -81,8 +81,10 @@ private:
 	
 
 	//level generation functions
+	void generateLevel(sf::Vector2i dimensions, int enemies);
 	bool generateTiles(std::vector<std::vector<char>> map);
-	std::vector<std::vector<char>> generateLevel(sf::Vector2i dimensions);
+	void generateEnemies(sf::Vector2i dimensions, int enemies);
+	std::vector<std::vector<char>> generateMap(sf::Vector2i dimensions);
 	std::vector<std::vector<char>> randChunk(std::vector<std::vector<std::vector<char>>> chunk);
 
 public:
@@ -108,16 +110,18 @@ public:
 	void screenShake(float time, int magnitude);
 	 
 	//!SETTINGS
-	int RES_WIDTH;		//resolution horizontally
-	int RES_HEIGHT;		//resolution vertically
+	int RES_WIDTH;			//resolution horizontally
+	int RES_HEIGHT;			//resolution vertically
 	bool FULLSCREEN;
-	int FRAME_CAP;		//frame rate cap
+	int FRAME_CAP;			//frame rate cap
+	float CONSIDER_RANGE;	//ratio of screen, used in drawing and optimising
+	float PROJECTILE_RANGE;	//same as above, but specialised for projectile collisions
 
-	int TILE_SIZE;		//size of each tile unit in pixels
-	int CHUNK_WIDTH;	//size of each terrain chunk in tiles
-
+	int TILE_SIZE;			//size of each tile unit in pixels
+	int CHUNK_WIDTH;		//size of each terrain chunk in tiles
+	
 	//GAME CONSTANTS
-	float GRAVITY;		//acceleration due to gravity
+	float GRAVITY;			//acceleration due to gravity
 
 	//CLOCK AND TIME
 	sf::Clock clock;
@@ -129,6 +133,7 @@ public:
 
 	//container for all terrain tile pointers
 	std::vector<Tile> tiles;
+	std::vector<Tile> decor;	//non collidable tiles
 	//backdrop sprite
 	sf::Sprite backDrop;
 
