@@ -150,6 +150,57 @@ void Recoil::generateEnemies(sf::Vector2i dimensions, int enemies) {
 }
 
 void Recoil::generateLevel(sf::Vector2i dimensions, int enemies) {
+	//save the player's score
+	int score = player.score;
+
+	//reset the tile, enemy, and projectile containers
+	tiles.clear();
+	this->enemies.clear();
+	projectiles.clear();
+	//setup projectile container
+	vector<Projectile> tempProjectiles;
+	projectiles.push_back(tempProjectiles);
+	projectiles.push_back(tempProjectiles);
+
 	generateTiles(generateMap(dimensions));
 	generateEnemies(dimensions, enemies);
+
+	//create the player at the bottom middle of the map
+	//player setup
+	missingSprite.setTexture(textures.misc.missing);
+	vector<sf::Texture*> tempVec;
+	tempVec.push_back(&textures.player.idle);
+	vector<vector<sf::Texture*>> tempAnimations;
+	tempAnimations.push_back(tempVec);
+	
+	vector<Weapon> tempWeaps;
+	
+	vector<sf::Texture*> f;
+	f.push_back(&textures.player.fGun);
+	vector<sf::Texture*> b;
+	b.push_back(&textures.player.bGun);
+	vector<vector<sf::Texture*>> fGun;
+	fGun.push_back(f);
+	vector<vector<sf::Texture*>> bGun;
+	bGun.push_back(b);
+
+	tempWeaps.push_back(Weapon("Dual Pistols", textures.projectiles.pistol, &textures.projectiles.pistol, fGun, bGun));
+
+	//player constructor
+	player = Player(sf::Vector2f(dimensions.x * CHUNK_WIDTH * TILE_SIZE / 2, dimensions.y * CHUNK_WIDTH * TILE_SIZE - 100), tempAnimations, tempWeaps, 100, 100, score);
+	player.friction = 0;
+	//player movement trackers
+	jump = false;
+	fire = false;
+
+	//setup the backdrop
+	backDrop.setTexture(textures.terrain.backDrop);
+	backDrop.setPosition(-RES_WIDTH, -RES_HEIGHT);
+	backDrop.setTextureRect(sf::IntRect(0, 0, dimensions.x * CHUNK_WIDTH * TILE_SIZE + 2 * RES_WIDTH, dimensions.y * CHUNK_WIDTH * TILE_SIZE + 2 * RES_HEIGHT));
+
+	//camera setup
+	camPos = player.center();
+	offset = sf::Vector2f(0, 0);
+
+	playing = true;
 }

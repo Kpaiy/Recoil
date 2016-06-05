@@ -22,12 +22,15 @@ elements of the game.
 #include <SFML\Graphics.hpp>
 #include <SFML\Audio.hpp>
 #include <SFML\Graphics\Color.hpp>
+#include <SFML\Graphics\Font.hpp>
+#include <SFML\Graphics\Text.hpp>
 
 //own code
 #include "Utilities.h"
 #include "Textures.h"
 #include "Terrain.h"
 #include "Character.h"
+#include "Button.h"
 
 #define PI 3.14159265358975323846264338327950
 
@@ -53,7 +56,9 @@ private:
 	//0 - Main Menu, 1 - Game, 2 - Settings
 	int menuState;
 
-	//whether the player is currently in a game
+	//if the game is paused or not
+	bool paused;
+	//whether there is a current game
 	bool playing;
 
 	//player control tracker
@@ -62,6 +67,8 @@ private:
 
 	//textures
 	Textures textures;
+	//font
+	sf::Font font;
 
 	//level chunks management
 	
@@ -87,6 +94,9 @@ private:
 	std::vector<std::vector<char>> generateMap(sf::Vector2i dimensions);
 	std::vector<std::vector<char>> randChunk(std::vector<std::vector<std::vector<char>>> chunk);
 
+	//game functions
+	void newGame(sf::Vector2i dimensions, int enemies);
+
 public:
 	//!RECOIL
 	//the constructor function, allowing everything to work
@@ -104,6 +114,11 @@ public:
 	void Render();
 	//run this when user quits game
 	void Close();
+
+	//menu functions
+	void menuEvent(sf::Event event);
+	void menuLogic();
+	void menuRender();
 
 	//tracks the player
 	void updateCamera(float deltaTime);
@@ -144,4 +159,7 @@ public:
 
 	//player
 	Player player;
+
+	//button container, divided by menu state
+	std::vector<std::vector<Button>> buttons;
 };

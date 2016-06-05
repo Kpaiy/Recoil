@@ -35,58 +35,28 @@ bool Recoil::Init() {
 	//load textures
 	textures.load();
 
+	//load font
+	font.loadFromFile("resources/graphics/cour.ttf");
+
 	//load chunks
 	loadAllChunks("chunks.rcl", CHUNK_WIDTH);
 
-	//load sprites
-	//temporary things
-	missingSprite.setTexture(textures.misc.missing);
-	vector<sf::Texture*> tempVec;
-	tempVec.push_back(&textures.player.idle);
-	vector<vector<sf::Texture*>> tempAnimations;
-	tempAnimations.push_back(tempVec);
-	
-	vector<Weapon> tempWeaps;
-	
-	vector<sf::Texture*> f;
-	f.push_back(&textures.player.fGun);
-	vector<sf::Texture*> b;
-	b.push_back(&textures.player.bGun);
-	vector<vector<sf::Texture*>> fGun;
-	fGun.push_back(f);
-	vector<vector<sf::Texture*>> bGun;
-	bGun.push_back(b);
+	//button container setup
+	vector<Button> tempButtons;
+	buttons.push_back(tempButtons);
+	buttons.push_back(tempButtons);
+	buttons.push_back(tempButtons);
+	buttons.push_back(tempButtons);
 
-	tempWeaps.push_back(Weapon("Dual Pistols", textures.projectiles.pistol, &textures.projectiles.pistol, fGun, bGun));
+	//button setup
+	Button(sf::IntRect(RES_WIDTH - 350, 50, 350, 70), sf::Color(200, 200, 200), sf::Color(100, 100, 100), "New Game", 1, font, 32, buttons, 0);
+
+	//load sprites
 	
 	//level setup
-	int chunkHorizontal = 3;		//count of horizontal chunks in the level to be generated
-	int chunkVertical = 3;			//count of vertical chunks
-	generateLevel(sf::Vector2i(3, 3), 10);
-	//backdrop setup
-	backDrop.setTexture(textures.terrain.backDrop);
-	backDrop.setPosition(-RES_WIDTH, -RES_HEIGHT);
-	backDrop.setTextureRect(sf::IntRect(0, 0, chunkHorizontal * CHUNK_WIDTH * TILE_SIZE + 2 * RES_WIDTH, chunkVertical * CHUNK_WIDTH * TILE_SIZE + 2 * RES_HEIGHT));
-
-	//temporary player constructor
-	player = Player(sf::Vector2f((float)500, (float)500), tempAnimations, tempWeaps);
-	player.friction = 0;
-	//player movement trackers
-	jump = false;
-	fire = false;
-
-	//temporary enemy test
-	vector<sf::Texture*> enemyTex;
-	enemyTex.push_back(&textures.enemies.wraith);
-	vector<vector<sf::Texture*>> enemyAnims;
-	enemyAnims.push_back(enemyTex);
-	
-	Enemy(sf::Vector2f((float)500, (float)2500), enemies, enemyAnims, &textures.projectiles.pistol);
-
-	//setup projectile container
-	vector<Projectile> tempProjectiles;
-	projectiles.push_back(tempProjectiles);
-	projectiles.push_back(tempProjectiles);
+	//int chunkHorizontal = 4;		//count of horizontal chunks in the level to be generated
+	//int chunkVertical = 3;			//count of vertical chunks
+	//generateLevel(sf::Vector2i(chunkHorizontal, chunkVertical), 12);
 
 	//console shenanigans
 	cout << "Opening window..." << endl;
@@ -102,7 +72,6 @@ bool Recoil::Init() {
 	}
 
 	//set up the game camera
-	camPos = player.center();
 	camDamp = 0.1;
 	camera.setSize(RES_WIDTH, RES_HEIGHT);
 	camera.setCenter(camPos);

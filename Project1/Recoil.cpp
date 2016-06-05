@@ -37,16 +37,34 @@ int Recoil::Execute() {
 
 	//!PROGRAM LOOP
 	while (running && window.isOpen()) {
-		//iterate through user input given this frame
 		sf::Event event;
-		while (window.pollEvent(event)) {
-			//chuck the event over to the event processing function
-			Event(event);
-		}
-		//run game logic
-		Logic();
-		//update the game screen
-		Render();
+		//check the menu state
+		switch (menuState) {
+		//if on game screen
+		case 1:
+			//iterate through user input given this frame
+			while (window.pollEvent(event)) {
+				//chuck the event over to the event processing function
+				Event(event);
+			}
+			//run game logic
+			Logic();
+			//update the game screen
+			Render();
+			break;
+		default:
+			//otherwise, run menu code
+			//iterate through user input given this frame
+			while (window.pollEvent(event)) {
+				//chuck the event over to the event processing function
+				menuEvent(event);
+			}
+			//run game logic
+			menuLogic();
+			//update the game screen
+			menuRender();
+			break;
+			}
 	}
 
 	//!TERMINATION

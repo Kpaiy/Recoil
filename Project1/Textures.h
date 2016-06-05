@@ -57,6 +57,7 @@ public:
 
 	sf::Color uiColor;
 	sf::Color healthBar;
+	sf::Color buttonColor;
 	
 	sf::Vector2f uiBar;
 	sf::Vector2f barContainer;

@@ -91,7 +91,7 @@ UI::UI() {
 	healthBar.r = 255;
 	healthBar.g = 0;
 	healthBar.b = 0;
-	healthBar.a = 150;
+	healthBar.a = 255;
 
 	uiBar.x = 330;
 	uiBar.y = 10;

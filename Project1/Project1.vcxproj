@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="LevelChunks.h" />
     <ClInclude Include="Player.h" />
@@ -38,6 +39,7 @@
     <ClCompile Include="LevelUtils.cpp" />
     <ClCompile Include="Logic.cpp" />
     <ClCompile Include="MathUtils.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Recoil.cpp" />
     <ClCompile Include="Render.cpp" />
