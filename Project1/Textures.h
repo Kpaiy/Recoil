@@ -67,6 +67,7 @@ public:
 	int outlineWidth;
 
 	sf::Texture heart;
+	sf::Texture warning;
 };
 
 class Textures {

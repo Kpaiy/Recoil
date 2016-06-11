@@ -56,6 +56,11 @@ private:
 	//0 - Main Menu, 1 - Game, 2 - Settings
 	int menuState;
 
+	//wave count
+	int waveCount;
+	//enemies spawned per wave
+	int waveEnemies;
+
 	//if the game is paused or not
 	bool paused;
 	//whether there is a current game
@@ -93,6 +98,9 @@ private:
 	void generateEnemies(sf::Vector2i dimensions, int enemies);
 	std::vector<std::vector<char>> generateMap(sf::Vector2i dimensions);
 	std::vector<std::vector<char>> randChunk(std::vector<std::vector<std::vector<char>>> chunk);
+
+	//dimensions of the current level
+	sf::Vector2i levelDimensions;
 
 	//game functions
 	void newGame(sf::Vector2i dimensions, int enemies);

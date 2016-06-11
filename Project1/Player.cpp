@@ -263,7 +263,7 @@ Player::Player(sf::Vector2f spawnPos, vector<vector<sf::Texture*>> &animations, 
 }
 
 Player::Player() {
-
+	score = 0;
 }
 
 //performs all required frame by frame functions

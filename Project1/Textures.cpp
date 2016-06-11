@@ -18,6 +18,8 @@ bool Terrain::load() {
 	}
 	//have the backdrop tileable
 	backDrop.setRepeated(true);
+	//make the tile texture tileable
+	dirt.setRepeated(true);
 	
 	return true;
 }
@@ -107,6 +109,10 @@ UI::UI() {
 
 bool UI::load() {
 	if (!TextureUtils::loadTexture("resources/graphics/heart.png", heart)) {
+		return false;
+	}
+
+	if (!TextureUtils::loadTexture("resources/graphics/warning.png", warning)) {
 		return false;
 	}
 

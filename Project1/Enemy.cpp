@@ -209,8 +209,12 @@ Enemy::Enemy(sf::Vector2f spawnPos, std::vector<Enemy> &enemies, std::vector<std
 	currentFrame = 0;
 
 	//AI setup
-	thinkCounter = 0;
+	thinkCounter = thinkTime;
 	thinkSpeed = thinkTime;
+
+	//AI stats
+	moving = true;
+	shooting = false;
 
 	//enemy stats
 	speed = 65;

@@ -49,14 +49,19 @@ bool Recoil::Init() {
 	buttons.push_back(tempButtons);
 
 	//button setup
-	Button(sf::IntRect(RES_WIDTH - 350, 50, 350, 70), sf::Color(200, 200, 200), sf::Color(100, 100, 100), "New Game", 1, font, 32, buttons, 0);
+	Button(sf::IntRect(RES_WIDTH - 350, 250, 350, 50), sf::Color(200, 200, 200), sf::Color(100, 100, 100), "New Game", 1, font, 32, buttons, 0);				//0,0
+	Button(sf::IntRect(0, 250, 350, 50), sf::Color(200, 200, 200), sf::Color(100, 100, 100), "Resume Game", -1, font, 32, buttons, 3);							//3,0
+	Button(sf::IntRect(RES_WIDTH - 350, 310, 350, 50), sf::Color(200, 200, 200), sf::Color(100, 100, 100), "Options", 1, font, 32, buttons, 0);					//0,1
+	Button(sf::IntRect(RES_WIDTH - 350, 370, 350, 50), sf::Color(200, 200, 200), sf::Color(100, 100, 100), "Quit", 1, font, 32, buttons, 0);					//0,2
 
-	//load sprites
-	
-	//level setup
-	//int chunkHorizontal = 4;		//count of horizontal chunks in the level to be generated
-	//int chunkVertical = 3;			//count of vertical chunks
-	//generateLevel(sf::Vector2i(chunkHorizontal, chunkVertical), 12);
+	Button(sf::IntRect(0, 50, 800, 100), sf::Color(200, 200, 200), sf::Color(200, 200, 200), "Settings", -1, font, 72, buttons, 2);								//2,0
+	Button(sf::IntRect(50, 180, 500, 70), sf::Color(200, 200, 200), sf::Color(200, 200,200), "Resolution", -1, font, 56, buttons, 2);							//2,1
+	Button(sf::IntRect(RES_WIDTH - 350, RES_HEIGHT - 50, 350, 50), sf::Color(200, 200, 200), sf::Color(100, 100, 100), "Back", 1, font, 32, buttons, 2);		//2,2
+	Button(sf::IntRect(100 , 315, 300, 40), sf::Color(200, 200, 200), sf::Color(100, 100, 100), "Toggle Fullscreen", 0, font, 28, buttons, 2);					//2,3
+	Button(sf::IntRect(100, 260, 300, 40), sf::Color(200, 200, 200), sf::Color(100, 100, 100), "Native Resolution", 0, font, 28, buttons, 2);					//2,4
+	Button(sf::IntRect(425, 260, 300, 40), sf::Color(200, 200, 200), sf::Color(100, 100, 100), "1600 x 900", 0, font, 28, buttons, 2);							//2,5
+	Button(sf::IntRect(750, 260, 300, 40), sf::Color(200, 200, 200), sf::Color(100, 100, 100), "1280 x 720", 0, font, 28, buttons, 2);							//2,6
+
 
 	//console shenanigans
 	cout << "Opening window..." << endl;
@@ -68,7 +73,7 @@ bool Recoil::Init() {
 	}
 	else {
 		//otherwise, create a windowed window
-		window.create(sf::VideoMode(RES_WIDTH, RES_HEIGHT), "Recoil");
+		window.create(sf::VideoMode(RES_WIDTH, RES_HEIGHT), "Recoil", sf::Style::Close);
 	}
 
 	//set up the game camera
@@ -86,7 +91,7 @@ bool Recoil::Init() {
 	hud.setCenter(RES_WIDTH / 2, RES_HEIGHT / 2);
 	
 
-	menuState = 0;
+	menuState = -1;
 	playing = false;
 
 	//disable os repeating keystrokes when a key is held down

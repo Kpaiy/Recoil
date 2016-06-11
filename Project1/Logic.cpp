@@ -14,8 +14,8 @@ void Recoil::Logic() {
 	//taken as seconds so multiplication is simple
 	deltaTime = clock.restart().asSeconds();
 
-	//if the weapon is automatic and the player is holding down the mouse
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && player.weapons[player.equippedWeapon].isAutomatic) {
+	//if the weapon is automatic and the player is both alive and holding down the mouse
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && player.weapons[player.equippedWeapon].isAutomatic && player.health > 0) {
 		player.fire(window.mapPixelToCoords(sf::Mouse::getPosition(window)), projectiles);
 	}
 
@@ -109,18 +109,27 @@ void Recoil::Logic() {
 		}
 	}
 
-	//update all enemies
-	for (vector<Enemy>::iterator it = enemies.begin(); it != enemies.end();) {
-		//update the enemy
-		if (!it->update(deltaTime, player.sprite.getPosition(), projectiles, GRAVITY, tiles, shakes, PROJECTILE_RANGE, RES_WIDTH, RES_HEIGHT)) {
-			//if the enemy died, add its score value to the player
-			player.score += it->scoreValue;
-			//erase the enemy
-			it = enemies.erase(it);
+	//update all enemies if the player is alive
+	if (player.health > 0) {
+		for (vector<Enemy>::iterator it = enemies.begin(); it != enemies.end();) {
+			//update the enemy
+			if (!it->update(deltaTime, player.sprite.getPosition(), projectiles, GRAVITY, tiles, shakes, PROJECTILE_RANGE, RES_WIDTH, RES_HEIGHT)) {
+				//if the enemy died, add its score value to the player
+				player.score += it->scoreValue * waveCount;
+				//erase the enemy
+				it = enemies.erase(it);
+			}
+			else {
+				//otherwise, increment the iterator and continue
+				++it;
+			}
 		}
-		else {
-			//otherwise, increment the iterator and continue
-			++it;
+
+		//if there are no more enemies left
+		if (enemies.size() == 0) {
+			//progress to the next wave
+			++waveCount;
+			generateEnemies(levelDimensions, waveEnemies);
 		}
 	}
 
@@ -133,17 +142,26 @@ void Recoil::Logic() {
 		moveX += 1;
 	}
 
-	//process player control
-	player.control(moveX, jump, deltaTime);
-
+	//process player control if the player is alive
+	if (player.health > 0) {
+		player.control(moveX, jump, deltaTime);
+	}
 
 	//update the player
 	player.update(GRAVITY, deltaTime, tiles, window.mapPixelToCoords(sf::Mouse::getPosition(window), camera), shakes, PROJECTILE_RANGE, RES_WIDTH, RES_HEIGHT);
-	//update the camera
-	updateCamera(deltaTime);
+	//update the camera if alive
+	if (player.health > 0) {
+		updateCamera(deltaTime);
+	}
 
 	//reset input trackers
 	jump = false;
+
+	//if the player is dead
+	if (player.health == 0) {
+		//set playing to false
+		playing = false;
+	}
 
 }
 

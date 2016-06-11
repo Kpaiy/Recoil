@@ -153,14 +153,25 @@ void Recoil::generateLevel(sf::Vector2i dimensions, int enemies) {
 	//save the player's score
 	int score = player.score;
 
+	//reset the wave count and enemies per wave
+	waveCount = 1;
+	waveEnemies = enemies;
+
+	//save the level dimensions
+	levelDimensions = dimensions;
+
 	//reset the tile, enemy, and projectile containers
 	tiles.clear();
 	this->enemies.clear();
 	projectiles.clear();
+	decor.clear();
 	//setup projectile container
 	vector<Projectile> tempProjectiles;
 	projectiles.push_back(tempProjectiles);
 	projectiles.push_back(tempProjectiles);
+
+	//clear the screenshakes
+	shakes.clear();
 
 	generateTiles(generateMap(dimensions));
 	generateEnemies(dimensions, enemies);
@@ -187,7 +198,7 @@ void Recoil::generateLevel(sf::Vector2i dimensions, int enemies) {
 	tempWeaps.push_back(Weapon("Dual Pistols", textures.projectiles.pistol, &textures.projectiles.pistol, fGun, bGun));
 
 	//player constructor
-	player = Player(sf::Vector2f(dimensions.x * CHUNK_WIDTH * TILE_SIZE / 2, dimensions.y * CHUNK_WIDTH * TILE_SIZE - 100), tempAnimations, tempWeaps, 100, 100, score);
+	player = Player(sf::Vector2f(dimensions.x * CHUNK_WIDTH * TILE_SIZE / 2, dimensions.y * CHUNK_WIDTH * TILE_SIZE - 5 * TILE_SIZE), tempAnimations, tempWeaps, 100, 100, score);
 	player.friction = 0;
 	//player movement trackers
 	jump = false;
