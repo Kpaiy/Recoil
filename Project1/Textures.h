@@ -68,6 +68,7 @@ public:
 
 	sf::Texture heart;
 	sf::Texture warning;
+	sf::Texture title;
 };
 
 class Textures {

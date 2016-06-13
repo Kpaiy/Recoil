@@ -116,6 +116,10 @@ bool UI::load() {
 		return false;
 	}
 
+	if (!TextureUtils::loadTexture("resources/graphics/title.png", title)) {
+		return false;
+	}
+
 	//return true
 	return true;
 }

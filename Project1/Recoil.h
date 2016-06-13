@@ -142,6 +142,8 @@ public:
 
 	int TILE_SIZE;			//size of each tile unit in pixels
 	int CHUNK_WIDTH;		//size of each terrain chunk in tiles
+
+	bool DEBUG;				//whether to display debug stats or not
 	
 	//GAME CONSTANTS
 	float GRAVITY;			//acceleration due to gravity

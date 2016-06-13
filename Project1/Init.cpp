@@ -13,6 +13,8 @@ using namespace std;
 
 bool Recoil::Init() {
 	//declare constants
+	DEBUG = false;
+
 	TILE_SIZE = 50;
 	CHUNK_WIDTH = 25;
 
@@ -33,13 +35,22 @@ bool Recoil::Init() {
 	//assign variable values here and load assets
 	
 	//load textures
-	textures.load();
+	if (!textures.load()) {
+		//if an error occured, halt loading
+		return false;
+	}
 
 	//load font
-	font.loadFromFile("resources/graphics/cour.ttf");
+	if (!font.loadFromFile("resources/graphics/cour.ttf")) {
+		//if failed, halt loading
+		return false;
+	}
 
 	//load chunks
-	loadAllChunks("chunks.rcl", CHUNK_WIDTH);
+	if (!loadAllChunks("chunks.rcl", CHUNK_WIDTH)) {
+		//if an error occured, return false
+		return false;
+	}
 
 	//button container setup
 	vector<Button> tempButtons;

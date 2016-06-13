@@ -34,6 +34,11 @@ void Recoil::Event(sf::Event event) {
 			//go to the main menu
 			menuState = 0;
 			break;
+		//if the player pressed the tilde key
+		case sf::Keyboard::Tilde:
+			//toggle the debug info
+			DEBUG = !DEBUG;
+			break;
 		default:
 			break;
 		}

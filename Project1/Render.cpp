@@ -116,26 +116,61 @@ void Recoil::Render() {
 		sf::Text scoreText;
 		scoreText.setString(to_string(player.score));
 		scoreText.setFont(font);
-		scoreText.setColor(sf::Color::Black);
+		scoreText.setColor(sf::Color::White);
 		scoreText.setStyle(sf::Text::Bold);
 		scoreText.setCharacterSize(34);
 		scoreText.setOrigin(scoreText.getLocalBounds().width, scoreText.getLocalBounds().height);
 		scoreText.setPosition(RES_WIDTH - textOffset, textures.ui.containerY + container.getLocalBounds().height / 2);
-		cout << player.score << endl;
 		window.draw(scoreText);
 	}
 	else {
+		//draw a semi-transparent white over the game scene
+		sf::RectangleShape fade;
+		fade.setFillColor(sf::Color(255, 255, 255, 100));
+		fade.setPosition(0, 0);
+		fade.setSize(sf::Vector2f(RES_WIDTH, RES_HEIGHT));
+		window.draw(fade);
+		//write game over to the screen
+		sf::Text gameOver;
+		gameOver.setString("Game Over");
+		gameOver.setFont(font);
+		gameOver.setColor(sf::Color::Black);
+		gameOver.setCharacterSize(56);
+		gameOver.setOrigin(gameOver.getLocalBounds().width / 2, gameOver.getLocalBounds().height);
+		gameOver.setPosition(RES_WIDTH / 2, RES_HEIGHT / 2 - 100);
+		window.draw(gameOver);
 		//write their final score to the screen
 		sf::Text scoreText;
-		scoreText.setString(to_string(player.score));
+		scoreText.setString("Your score: " + to_string(player.score));
 		scoreText.setFont(font);
 		scoreText.setColor(sf::Color::Black);
 		scoreText.setStyle(sf::Text::Bold);
 		scoreText.setCharacterSize(56);
 		scoreText.setOrigin(scoreText.getLocalBounds().width / 2, scoreText.getLocalBounds().height);
-		scoreText.setPosition(RES_WIDTH / 2 , RES_HEIGHT / 3);
+		scoreText.setPosition(RES_WIDTH / 2 , RES_HEIGHT / 2);
 
 		window.draw(scoreText);
+	}
+
+	//if debug is true
+	if (DEBUG) {
+		//draw the framerate to the bottom left of the screen
+		sf::Text debugStats;
+		debugStats.setString("Framerate: " + to_string((int)(1 / deltaTime)));
+		debugStats.setFont(font);
+		debugStats.setColor(sf::Color::White);
+		debugStats.setCharacterSize(32);
+		debugStats.setOrigin(0, debugStats.getLocalBounds().height);
+		debugStats.setPosition(0, RES_HEIGHT - 50);
+		window.draw(debugStats);
+		//write the amount of projectiles
+		debugStats.setString("Projectile count: " + to_string((int)(projectiles[0].size() + projectiles[1].size())));
+		debugStats.move(0, -debugStats.getLocalBounds().height);
+		window.draw(debugStats);
+		//write the amount of enemies
+		debugStats.setString("Enemy count: " + to_string((int)(enemies.size())));
+		debugStats.move(0, -debugStats.getLocalBounds().height);
+		window.draw(debugStats);
 	}
 
 	//switch back to the camera

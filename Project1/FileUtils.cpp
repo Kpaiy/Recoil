@@ -45,7 +45,7 @@ bool FileUtils::loadSettings(string filename, int& res_width, int& res_height, b
 		//notify using console
 		cout << "File not found: " << filename << endl;
 		//load hardcoded settings
-		cout << "Creating stock settings";
+		cout << "Creating stock settings" << endl;
 		res_width = 1280;
 		res_height = 720;
 		//notify via console

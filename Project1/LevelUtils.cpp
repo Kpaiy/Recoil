@@ -43,7 +43,7 @@ This function takes in two numbers, the width and height of the level
 in chunks. This function then stitches together the appropriate amount
 and types of chunks together to fit the dimensions, creating a level.
 */
-vector<vector<char>> Recoil::generateMap(sf::Vector2i dimensions) {	
+vector<vector<char>> Recoil::generateMap(sf::Vector2i dimensions) {
 	//a temporary chunk used for stitching purposes
 	vector<vector<char>> tempChunk;
 	//the output level
@@ -120,6 +120,9 @@ vector<vector<char>> Recoil::generateMap(sf::Vector2i dimensions) {
 
 	}
 
+	//output to console
+	cout << "Map with dimensions " << dimensions.x << " by " << dimensions.y << " generated." << endl;
+
 	return level;
 }
 
@@ -147,9 +150,15 @@ void Recoil::generateEnemies(sf::Vector2i dimensions, int enemies) {
 		//create an enemy at this location
 		Enemy(spawnPos, this->enemies, enemyAnims, &textures.projectiles.pistol);
 	}
+
+	//console output
+	cout << enemies << " enemies generated to fit on a " << dimensions.x << " by " << dimensions.y << " map." << endl;
 }
 
 void Recoil::generateLevel(sf::Vector2i dimensions, int enemies) {
+	//console output
+	cout << "Generating a " << dimensions.x << "x" << dimensions.y << " level with " << enemies << " enemies per wave..." << endl;
+
 	//save the player's score
 	int score = player.score;
 
@@ -214,4 +223,7 @@ void Recoil::generateLevel(sf::Vector2i dimensions, int enemies) {
 	offset = sf::Vector2f(0, 0);
 
 	playing = true;
+
+	//console output
+	cout << "Level generated." << endl;
 }

@@ -268,10 +268,19 @@ void Recoil::menuRender() {
 			it->draw(window);
 		}
 
-		//if in the main menu and the player currently has a game
-		if (menuState == 0 && playing) {
-			//draw the resume game button to the screen
-			buttons[3][0].draw(window);
+		//if in the main menu
+		if (menuState == 0) {
+			//draw the logo to the screen
+			sf::Sprite logo;
+			logo.setTexture(textures.ui.title);
+			logo.setPosition(0, 0);
+			window.draw(logo);
+
+			//if there is a game in progress
+			if (playing) {
+				//draw the resume game button to the screen
+				buttons[3][0].draw(window);
+			}
 		}
 	} else {
 		//if on the warning screen
