@@ -103,7 +103,7 @@ private:
 	sf::Vector2i levelDimensions;
 
 	//game functions
-	void newGame(sf::Vector2i dimensions, int enemies);
+	//void newGame(sf::Vector2i dimensions, int enemies);
 
 public:
 	//!RECOIL

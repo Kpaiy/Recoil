@@ -80,6 +80,4 @@ int main(int argc, char* argv[]) {
 	//construct the game
 	Recoil recoil;
 	return recoil.Execute();
-
-	return 0;
 }

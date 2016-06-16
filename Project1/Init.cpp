@@ -108,6 +108,9 @@ bool Recoil::Init() {
 	//disable os repeating keystrokes when a key is held down
 	window.setKeyRepeatEnabled(false);
 
+	//set running to true
+	running = true;
+
 	//if no hiccups from the first bit, return true
 	return true;
 }
